@@ -1,294 +1,246 @@
+<!doctype html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>走って、つくって。｜別府から、やまなみへ。</title>
+<meta content="大阪からフェリーで九州へ。別府、狭霧台、長者原、牧ノ戸峠を巡る自転車旅の実体験。写真と動画、行程と費用、補給の反省を記録。" name="description"/>
+<style>
+:root{--ink:#20332f;--muted:#64716b;--paper:#faf9f4;--green:#315c48;--line:#dcded4;--accent:#e0bd55}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:85px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;line-height:1.95}
+a{color:inherit}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:var(--paper);border-bottom:1px solid var(--line)}
+.brand{text-decoration:none;font-weight:800;font-size:22px;letter-spacing:.06em}
+.brand small{font-size:10px;display:block;line-height:1;letter-spacing:.2em;color:var(--muted)}
+nav{display:flex;gap:30px;font-size:12px}
+nav a{text-decoration:none}
+.hero{position:relative;height:min(780px,83vh);min-height:560px;color:white;background:#3c675d}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:50% 65%}
+.hero:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,29,29,.66),transparent 78%),linear-gradient(0deg,rgba(5,30,30,.42),transparent 50%)}
+.hero-copy{position:absolute;z-index:1;top:13%;left:7%;max-width:700px}
+.eyebrow{font-size:11px;letter-spacing:.23em;font-weight:bold}
+.tag{display:inline-block;border:1px solid #ffffff85;padding:4px 13px;font-size:11px;margin-bottom:20px}
+h1{font-family:'Yu Mincho',serif;font-weight:500;font-size:clamp(40px,5.5vw,76px);line-height:1.38;letter-spacing:.08em;margin:12px 0 20px}
+.hero-copy p{font-size:14px;line-height:2.1}
+.hero-foot{position:absolute;bottom:30px;left:7%;right:7%;display:flex;justify-content:space-between;z-index:1;font-size:11px;letter-spacing:.12em}
+.intro{max-width:890px;margin:0 auto;padding:80px 28px}
+.intro h2{font-family:'Yu Mincho',serif;font-size:29px;font-weight:500;line-height:1.7}
+.intro p{color:#4d5e55}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border-block:1px solid var(--line);margin-top:42px;padding:24px 0}
+.facts div{padding:0 20px;border-right:1px solid var(--line)}
+.facts div:first-child{padding-left:0}
+.facts div:last-child{border:0}
+.facts small{display:block;color:var(--muted);font-size:11px}
+.facts strong{font-size:19px}
+.facts span{font-size:11px}
+.layout{max-width:1200px;margin:auto;padding:0 28px 90px;display:grid;grid-template-columns:190px minmax(0,1fr);gap:65px}
+.toc{position:sticky;top:30px;align-self:start;font-size:12px}
+.toc p{font-size:10px;letter-spacing:.2em}
+.toc a{display:block;text-decoration:none;border-bottom:1px solid var(--line);padding:12px 0}
+.toc a:hover{color:#8b6b14}
+.article{min-width:0}
+.section{margin-bottom:75px}
+.num{color:#9a854b;font-size:11px;letter-spacing:.2em}
+h2{font-family:'Yu Mincho',serif;line-height:1.6;font-size:30px;font-weight:500;margin:13px 0 25px}
+h3{font-size:18px}
+p{font-size:15px;margin:0 0 22px}
+.media{margin:30px 0}
+figure{margin:0}
+figure img,video{display:block;width:100%;border-radius:3px}
+video{aspect-ratio:16/9;background:#172a24}
+figcaption{color:var(--muted);font-size:11px;padding-top:9px}
+.note{background:#eeefe5;border-left:3px solid #8a9b65;padding:23px 26px;margin:28px 0;font-size:14px}
+.note p:last-child{margin-bottom:0}
+.quote{font-family:'Yu Mincho',serif;font-size:25px;line-height:1.8;border-block:1px solid var(--line);padding:28px 0;margin:35px 0}
+.wide{aspect-ratio:16/9;object-fit:cover}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+.two img{height:430px;object-fit:cover}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{text-align:left;font-size:11px;color:var(--muted);border-bottom:2px solid var(--ink);padding:13px 12px}
+td{padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{white-space:nowrap}
+.tablewrap{overflow-x:auto}
+tr.total{background:#e8ecdf;font-weight:bold}
+.small{font-size:12px;color:var(--muted)}
+details{border-block:1px solid var(--line);padding:20px 0;margin-top:20px}
+summary{cursor:pointer;font-weight:bold;font-size:14px}
+details p{padding-top:18px;font-size:13px}
+.lessons{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.lesson{border-top:2px solid var(--green);padding-top:20px}
+.lesson b{display:block;margin-bottom:12px}
+.lesson p{font-size:14px}
+.about{background:#203d32;color:#fff;padding:65px max(7%,calc((100vw - 1000px)/2))}
+.about h2{font-size:30px}
+.about p{max-width:680px;font-size:14px;color:#dae4db}
+.about .eyebrow{color:#d8bf77}
+footer{padding:25px 7%;font-size:11px;display:flex;justify-content:space-between;color:var(--muted)}
+.top{display:inline-block;font-size:12px;margin-top:20px}
+button{font:inherit}
+a:focus-visible,summary:focus-visible{outline:3px solid #bf9733;outline-offset:5px}
 
-(()=>{
-const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const breaks=(v)=>esc(v).replace(/\r?\n/g,'<br>');
-const set=(sel,v,asBreaks=false)=>{
-  const e=document.querySelector(sel);
-  if(e)e.innerHTML=asBreaks?breaks(v):esc(v).replace(/\r?\n/g,'<br>');
-};
-const dateLabel=(v)=>{
-  if(!v)return '';
-  const d=new Date(v);
-  return isNaN(d)?v:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}`;
-};
-const getSlug=()=>{
-  const q=new URLSearchParams(location.search).get('slug');
-  if(q)return q;
-  const m=location.pathname.match(/\/journeys\/([^/]+)\/?$/);
-  return m?m[1]:'beppu';
-};
-const safeMarkdown=(s)=>{
-  if(!window.marked)return esc(s).replace(/\n/g,'<br>');
-  const raw=window.marked.parse(s||'');
-  return window.DOMPurify
-    ?DOMPurify.sanitize(raw,{
-      ADD_TAGS:['video','source','iframe'],
-      ADD_ATTR:['controls','muted','playsinline','preload','poster','src','type','allow','allowfullscreen','frameborder']
-    })
-    :raw;
-};
-
-// 記事本文の画像・表・動画を画面幅に収める
-function fixArticleImages(article){
-  if(!article)return;
-
-  article.querySelectorAll('img').forEach(img=>{
-    img.style.maxWidth='100%';
-    img.style.height='auto';
-    img.style.width='auto';
-    img.style.display='block';
-    img.style.objectFit='contain';
-    img.style.margin='24px auto';
-  });
-
-  article.querySelectorAll('table').forEach(table=>{
-    table.style.maxWidth='100%';
-    table.style.width='100%';
-    table.style.display='block';
-    table.style.overflowX='auto';
-  });
-
-  article.querySelectorAll('video,iframe').forEach(media=>{
-    media.style.maxWidth='100%';
-  });
-
-  article.querySelectorAll('video').forEach(video=>{
-    video.style.width='100%';
-  });
+@media(max-width:800px){
+header{height:68px}
+.brand{font-size:18px}
+nav{gap:15px}
+nav a:first-child{display:none}
+.hero{min-height:560px;height:75vh}
+.hero-copy{left:7%;top:12%}
+.hero-copy p{max-width:260px}
+.hero img{object-position:62% center}
+.hero-foot{font-size:9px}
+.intro{padding:50px 24px}
+.intro h2{font-size:24px}
+.facts{grid-template-columns:1fr 1fr;gap:22px}
+.facts div{padding:0;border:0}
+.layout{display:block;padding:0 24px 50px}
+.toc{position:static;margin-bottom:48px;display:flex;gap:12px;overflow-x:auto;white-space:nowrap}
+.toc p{display:none}
+.toc a{font-size:11px}
+h2{font-size:25px}
+.section{margin-bottom:55px}
+.two{grid-template-columns:1fr}
+.two img{height:340px}
+.lessons{grid-template-columns:1fr}
+.quote{font-size:22px}
+.about{padding:45px 24px}
+footer{gap:15px;flex-wrap:wrap}
 }
 
-// 最上部のヒーロー画像は、既存のCSSの高さ設定を維持する
-function fixHeroImage(img){
-  if(!img)return;
-  img.style.width='100%';
-  img.style.height='100%';
-  img.style.maxWidth='100%';
-  img.style.objectFit='cover';
-  img.style.display='block';
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.route-note{margin:35px 0;background:#e8ecdf;padding:26px;border-top:3px solid var(--green)}
+.route-note h3{font-family:"Yu Mincho",serif;font-size:25px;margin:12px 0 20px}
+.route-pair{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px}
+.route-pair small,.route-pair strong,.route-pair span{display:block}
+.route-pair small{font-size:11px;color:var(--muted)}
+.route-pair strong{font-size:17px}
+.route-pair span{font-size:12px}
+.route-note p:last-child{margin-bottom:0}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:28px 0}
+.photo-grid img{height:270px;object-fit:contain;background:#eeefe5}
+.sweet-stop{display:grid;grid-template-columns:minmax(180px,.7fr) 1fr;align-items:center;gap:35px;padding:30px;background:#eeefe5;margin:35px 0}
+.sweet-stop img{max-height:390px;object-fit:contain}
+.sweet-stop p:last-child{margin-bottom:0}
+#outbound>figure img,#return>figure img{max-height:520px;object-fit:contain;background:#eeefe5}
+#outbound>figure,#return>figure{margin:25px 0}
+
+@media(max-width:600px){
+.route-pair,.photo-grid,.sweet-stop{grid-template-columns:1fr}
+.sweet-stop{padding:22px}
+.photo-grid img{height:auto;max-height:400px}
+.route-note{padding:22px}
+.sweet-stop img{max-height:360px}
 }
 
-async function load(){
-  let data;
+figure img{height:auto}
+.photo-grid img{height:270px}
+.two img{height:430px}
+.sweet-stop img{height:auto}
 
-  try{
-    const r=await fetch('/content/site.json',{cache:'no-store'});
-    if(!r.ok)throw Error('content missing');
-    data=await r.json();
-  }catch(e){
-    return;
-  }
+@media(max-width:800px){.two img{height:340px}}
+@media(max-width:600px){.photo-grid img{height:auto}}
 
-  const hero=data.hero||{};
+#itinerary table{min-width:620px}
+#itinerary th:nth-child(n+3),#itinerary td:nth-child(n+3){white-space:nowrap;text-align:right}
 
-  // トップページ
-  if(document.body.id==='top'||document.querySelector('#journeys')){
-    set('.hero-copy .eyebrow',hero.eyebrow);
-    set('.hero-copy h1',hero.title,true);
-    set('.hero-copy p',hero.description,true);
-
-    const heroButton=document.querySelector('.hero-copy .button');
-    if(heroButton){
-      heroButton.innerHTML=esc(hero.button_label)+' <span aria-hidden="true">↘</span>';
-    }
-
-    set('.hero-caption',hero.caption);
-
-    const hi=document.querySelector('.hero-image img');
-    if(hi){
-      hi.src=hero.image||hi.src;
-      hi.alt=hero.image_alt||'';
-      hi.style.maxWidth='100%';
-      hi.style.height='auto';
-    }
-
-    const js=data.journey_section||{};
-    set('#journeys .section-head .eyebrow',js.eyebrow);
-    set('#journeys .section-head h2',js.title);
-    set('#journeys .section-head p',js.description);
-
-    const journeys=data.journeys||[];
-    const j=journeys[0];
-    const feature=document.querySelector('#journeys .feature');
-
-    if(j&&feature){
-      feature.href='/journeys/'+encodeURIComponent(j.slug)+'/';
-
-      const im=feature.querySelector('.feature-photo img');
-      if(im){
-        im.src=j.image||'';
-        im.alt=j.image_alt||'';
-        im.style.maxWidth='100%';
-        im.style.height='auto';
-      }
-
-      const cp=feature.querySelector('.feature-copy');
-      if(cp){
-        const pill=cp.querySelector('.pill');
-        if(pill)pill.textContent=j.category||'';
-
-        const h3=cp.querySelector('h3');
-        if(h3)h3.innerHTML=breaks(j.title||'');
-
-        const p=cp.querySelector('p');
-        if(p)p.textContent=j.summary||'';
-
-        const metas=cp.querySelectorAll('.meta b');
-        if(metas[0])metas[0].textContent=j.distance||'—';
-        if(metas[1])metas[1].textContent=j.ascent||'—';
-        if(metas[2])metas[2].textContent=j.period||dateLabel(j.date);
-      }
-    }
-
-    const latest=document.querySelector('#journeys .latest');
-    if(latest){
-      latest.innerHTML='<span>記事一覧</span>'+
-        journeys.map(x=>`<a href="/journeys/${encodeURIComponent(x.slug)}/">${esc(x.title)}　→</a>`).join('');
-    }
-
-    // 道具とものづくり
-    const making=data.making||{};
-    set('#making .wrap > div:first-child .eyebrow',making.eyebrow);
-    set('#making .wrap > div:first-child h2',making.title,true);
-
-    const makingIntro=document.querySelector('#making .wrap > div:first-child');
-    if(makingIntro){
-      const old=[...makingIntro.querySelectorAll('p')];
-
-      (making.intro_paragraphs||[]).forEach((p,i)=>{
-        if(old[i])old[i].innerHTML=breaks(p);
-      });
-
-      for(let i=(making.intro_paragraphs||[]).length;i<old.length;i++){
-        old[i].remove();
-      }
-    }
-
-    const projWrap=document.querySelector('#making .wrap > .project-list');
-    if(projWrap){
-      projWrap.innerHTML=(making.projects||[]).map(p=>
-        `<div class="project">
-          <span class="status">${esc(p.status)}</span>
-          <h3>${breaks(p.title)}</h3>
-          <p>${esc(p.description)}</p>
-          <details class="project-details">
-            <summary>${esc(p.details_summary)}</summary>
-            <p>${esc(p.details)}</p>
-          </details>
-        </div>`
-      ).join('');
-    }
-
-    // 愛車と装備
-    const gear=data.gear||{};
-    set('#gear .eyebrow',gear.eyebrow);
-    set('#gear h2',gear.title,true);
-    set('#gear > div p',gear.description);
-
-    const gi=document.querySelector('#gear .gear-photo img');
-    if(gi){
-      gi.src=gear.image||gi.src;
-      gi.alt=gear.image_alt||'';
-      gi.style.maxWidth='100%';
-      gi.style.height='auto';
-    }
-
-    const gl=document.querySelector('#gear .gear-list');
-    if(gl){
-      gl.innerHTML=(gear.items||[]).map(i=>
-        `<div><b>${esc(i.label)}</b><span>${esc(i.value)}</span></div>`
-      ).join('');
-    }
-
-    // このサイトについて
-    const about=data.about||{};
-    set('#about .eyebrow',about.eyebrow);
-    set('#about h2',about.title,true);
-
-    const exp=document.querySelector('#about .experience');
-    if(exp){
-      exp.innerHTML=(about.experience||[]).map(i=>
-        `<div><strong>${esc(i.value)}</strong><small>${esc(i.label)}</small></div>`
-      ).join('');
-    }
-
-    const aboutText=document.querySelector('#about .about-inner > div:nth-child(2)');
-    if(aboutText){
-      aboutText.innerHTML=(about.paragraphs||[]).map(p=>
-        `<p>${esc(p)}</p>`
-      ).join('');
-    }
-  }
-
-  // 記事ページ
-  const article=document.querySelector('#article-body');
-
-  if(article){
-    const slug=getSlug();
-    const item=(data.journeys||[]).find(x=>x.slug===slug);
-
-    if(!item){
-      article.innerHTML='<p>記事が見つかりません。管理画面で記事のURL用IDを確認してください。</p>';
-      return;
-    }
-
-    document.title=`${item.title}｜走って、つくって。`;
-
-    const meta=document.querySelector('meta[name="description"]');
-    if(meta)meta.content=item.summary||'';
-
-    // 最上部の画像：画像の高さをautoに変更しない
-    const heroImg=document.querySelector('.hero > img');
-    if(heroImg){
-      heroImg.src=item.hero_image||item.image||hero.image||heroImg.src;
-      heroImg.alt=item.image_alt||'';
-      fixHeroImage(heroImg);
-    }
-
-    const tag=document.querySelector('.hero-copy .tag');
-    if(tag)tag.textContent=item.category||'';
-
-    const h=document.querySelector('.hero-copy h1');
-    if(h)h.innerHTML=breaks(item.title||'');
-
-    const hp=document.querySelector('.hero-copy p');
-    if(hp)hp.textContent=item.summary||'';
-
-    const intro=document.querySelector('.intro');
-    if(intro){
-      const h2=intro.querySelector('h2');
-      if(h2)h2.innerHTML=breaks(item.intro_title||item.title);
-
-      const p=intro.querySelector('p');
-      if(p)p.textContent=item.intro||item.summary;
-
-      const facts=intro.querySelectorAll('.facts strong');
-      if(facts[0])facts[0].textContent=item.distance||'—';
-      if(facts[1])facts[1].textContent=item.ascent||'—';
-      if(facts[2])facts[2].textContent=dateLabel(item.date);
-    }
-
-    // 本文の画像は画面幅に収める
-    article.innerHTML=safeMarkdown(item.body||'');
-    fixArticleImages(article);
-
-    // 目次を作成
-    const toc=document.querySelector('.toc');
-    if(toc){
-      const heads=[...article.querySelectorAll('h2,h3')];
-
-      toc.innerHTML='<p>IN THIS JOURNAL</p>'+
-        heads.map((h,i)=>{
-          const id='article-section-'+(i+1);
-          h.id=id;
-          return `<a href="#${id}">${esc(h.textContent)}</a>`;
-        }).join('');
-    }
-  }
+/* CMSの記事本文に挿入された画像が画面幅を超えないようにする */
+#article-body img {
+  display:block;
+  max-width:100%;
+  height:auto;
+  object-fit:contain;
+  margin:24px auto;
 }
+</style>
+</head>
+<body id="top">
+<header>
+<a class="brand" href="/">走って、つくって。<small>RIDE &amp; MAKE / KANSAI</small></a>
+<nav aria-label="メインナビゲーション">
+<a href="/">トップ</a>
+<a href="#story">旅の記録</a>
+<a href="#itinerary">行程と費用</a>
+<a href="#about">このサイトについて</a>
+</nav>
+</header>
 
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',load);
-}else{
-  load();
-}
-})();
+<div style="padding:14px 7%;font-size:12px">
+<a href="/">トップ</a> / <a href="/#journeys">旅の記録</a> / 別府から、やまなみへ。
+</div>
+
+<section class="hero">
+<img alt="青空と山並みを背景にした黄色いロードバイク" fetchpriority="high" height="1080" src="/assets/hero.webp" width="1920"/>
+<div class="hero-copy">
+<span class="tag">RIDE JOURNAL　01 / OITA</span>
+<h1>別府から、<br/>やまなみへ。</h1>
+<p>海を渡り、山を越え、また船で帰る。<br/>大阪発、船中2泊・現地1日の自転車旅。</p>
+</div>
+<div class="hero-foot">
+<span>2026.08.22 — 08.24　｜　一人旅</span>
+<a href="#story">旅の記録を読む ↓</a>
+</div>
+</section>
+
+<section class="intro" id="story">
+<div class="eyebrow">FERRY × ROAD BIKE</div>
+<h2>景色も、あの昼ごはんも。<br/>一つに絞れない、旅の記憶。</h2>
+<p>狭霧台の景色、九重連山、牧ノ戸峠の先に広がる眺め。大阪からフェリーで渡った九州には、1日では語り切れない場面がありました。炎天下の登りと、補給の失敗も。その先で食べた素朴なうどん定食は、忘れられないおいしさでした。</p>
+<p>これは、実際に走った行程と、次に走るなら変えたいことの記録です。</p>
+
+<div class="route-note">
+<span class="eyebrow">この旅を成立させた、往復別航路の工夫</span>
+<h3>大阪から出発して、神戸へ帰る。</h3>
+<div class="route-pair">
+<div>
+<small>往路 / 船中1泊目</small>
+<strong>大阪南港・ATC → 別府港</strong>
+<span>別府に着いたら、ここからライド開始。</span>
+</div>
+<div>
+<small>復路 / 船中2泊目</small>
+<strong>大分港 → 神戸港</strong>
+<span>走行後は豊後竹田から輪行し、大分港へ。</span>
+</div>
+</div>
+<p>今回の走行行程では、別府発の帰りの便は出港時刻が早く、間に合いません。そこで復路は大分港発を選びました。その代わり、翌朝の到着地は大阪ではなく神戸。神戸から自宅までの移動も含めて組んだ旅です。</p>
+<p class="small">この旅での航路選択の理由です。予約時は利用日のダイヤを確認してください。</p>
+</div>
+
+<div class="facts">
+<div><small>旅のかたち</small><strong>船中2泊</strong><span>・現地1日</span></div>
+<div><small>走行距離〈Strava〉</small><strong>98.6</strong><span> km</span></div>
+<div><small>累積上昇〈Strava〉</small><strong>1,981</strong><span> m</span></div>
+<div><small>フェリー支払額・往復</small><strong>30,170</strong><span> 円</span></div>
+</div>
+<p class="small" style="margin-top:15px">走行距離・累積上昇は本人確認のStrava表示値です。神戸への帰着は月曜朝になります。</p>
+</section>
+
+<div class="layout">
+<aside aria-label="記事の目次" class="toc">
+<p>IN THIS JOURNAL</p>
+</aside>
+<main class="article">
+<article id="article-body"></article>
+</main>
+</div>
+
+<section class="about" id="about">
+<div class="eyebrow">ABOUT / RIDE &amp; MAKE</div>
+<h2>走って、試して。<br/>自分に合うものを、つくる。</h2>
+<p>ロードバイク歴11年。各地を走り、ルートやランチを考え、道具を試すことが好きです。市販品がぴったり合わなければ、3Dプリンターで小さなパーツをつくることも。実際に走った旅と、暮らしや自転車の工夫を少しずつ残していきます。</p>
+</section>
+
+<footer>
+<span>走って、つくって。　© 2026　<a href="/contact/">お問い合わせ</a></span>
+<span>旅の記録：2026年8月 / 更新：2026年10月25日</span>
+</footer>
+
+<script async="" src="https://strava-embeds.com/embed.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script src="/assets/js/cms-content.js"></script>
+</body>
+</html>
