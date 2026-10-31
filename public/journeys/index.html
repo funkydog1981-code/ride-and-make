@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>旅の記録一覧｜走って、つくって。</title>
+<meta name="description" content="ロードバイクで実際に走ったルート、景色、グルメ、旅の工夫を記録した記事一覧です。">
+
+<style>
+:root {
+  --paper:#faf9f4;
+  --ink:#20332f;
+  --muted:#68736b;
+  --line:#d8ddd1;
+  --gold:#b39446;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;
+  line-height:1.9;
+}
+a { color:inherit; text-decoration:none; }
+a:focus-visible {
+  outline:3px solid var(--gold);
+  outline-offset:5px;
+}
+header {
+  padding:23px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:30px;
+  border-bottom:1px solid var(--line);
+}
+.brand {
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:.06em;
+  line-height:1.5;
+}
+.brand small {
+  display:block;
+  font-size:9px;
+  letter-spacing:.25em;
+  color:var(--muted);
+}
+nav { display:flex; gap:30px; font-size:12px; }
+nav a:hover,.text-link:hover { color:#927027; }
+.wrap {
+  max-width:1160px;
+  margin:auto;
+  padding:65px 30px 90px;
+}
+.eyebrow {
+  font-size:10px;
+  letter-spacing:.23em;
+  font-weight:700;
+  color:var(--gold);
+}
+h1,h2,h3 {
+  font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+  font-weight:500;
+}
+h1 {
+  font-size:clamp(34px,4vw,48px);
+  line-height:1.5;
+  margin:12px 0 20px;
+}
+.intro {
+  max-width:620px;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:38px;
+}
+.breadcrumb {
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:24px;
+}
+.breadcrumb a {
+  border-bottom:1px solid var(--line);
+}
+.journey-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:24px;
+}
+.journey-card {
+  min-width:0;
+  background:#eef0e7;
+  display:flex;
+  flex-direction:column;
+  transition:transform .2s,box-shadow .2s;
+}
+.journey-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 8px 24px #20332f12;
+}
+.journey-card-photo {
+  display:block;
+  overflow:hidden;
+  aspect-ratio:4 / 3;
+  background:#e6e8df;
+}
+.journey-card-photo img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .4s;
+}
+.journey-card:hover .journey-card-photo img {
+  transform:scale(1.035);
+}
+.journey-card-copy {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  padding:22px;
+  flex:1;
+}
+.pill {
+  font-size:10px;
+  border:1px solid #a9b5a1;
+  padding:3px 9px;
+  display:inline-block;
+  letter-spacing:.08em;
+}
+.journey-card h3 {
+  font-size:23px;
+  line-height:1.55;
+  margin:13px 0 10px;
+}
+.journey-card p {
+  color:#556359;
+  font-size:12px;
+  line-height:1.9;
+  margin:0 0 18px;
+}
+.card-meta {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 15px;
+  border-top:1px solid #d1d8c8;
+  padding-top:12px;
+  margin-top:auto;
+  width:100%;
+  color:var(--muted);
+  font-size:10px;
+}
+.card-meta span { white-space:nowrap; }
+.card-link {
+  display:inline-block;
+  border-bottom:1px solid currentColor;
+  font-size:11px;
+  padding-bottom:3px;
+  margin-top:18px;
+}
+.journey-empty {
+  grid-column:1/-1;
+  padding:28px;
+  background:#eef0e7;
+  color:var(--muted);
+  font-size:13px;
+}
+.back-link {
+  display:inline-block;
+  border-bottom:1px solid currentColor;
+  font-size:12px;
+  padding-bottom:5px;
+  margin-top:40px;
+}
+footer {
+  border-top:1px solid var(--line);
+  padding:30px 5%;
+  display:flex;
+  justify-content:space-between;
+  gap:25px;
+  font-size:11px;
+  color:var(--muted);
+}
+.footer-links { display:flex; gap:24px; }
+
+@media(max-width:900px) {
+  nav { gap:16px; font-size:11px; }
+  .journey-grid { gap:16px; }
+  .journey-card-copy { padding:17px; }
+  .journey-card h3 { font-size:20px; }
+}
+@media(max-width:650px) {
+  header {
+    align-items:flex-start;
+    flex-direction:column;
+    padding:18px 22px;
+    gap:16px;
+  }
+  .brand { font-size:22px; }
+  nav {
+    width:100%;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    gap:10px 18px;
+    font-size:10px;
+  }
+  nav a { white-space:nowrap; }
+  .wrap { padding:45px 22px 65px; }
+  h1 { font-size:34px; }
+  .journey-grid { grid-template-columns:1fr; gap:22px; }
+  .journey-card {
+    display:grid;
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  }
+  .journey-card-photo { aspect-ratio:auto; min-height:100%; }
+  .journey-card-copy { padding:15px; }
+  .journey-card h3 { font-size:18px; margin:10px 0; }
+  .journey-card p { font-size:11px; margin-bottom:12px; }
+  .card-meta { gap:5px 10px; }
+  footer { flex-direction:column; padding:25px 22px; }
+  .footer-links { flex-wrap:wrap; gap:18px; }
+}
+@media(max-width:380px) {
+  .journey-card { display:flex; }
+  .journey-card-photo { aspect-ratio:4 / 3; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  * { transition:none!important; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <a class="brand" href="/">走って、つくって。<small>RIDE & MAKE / KANSAI</small></a>
+  <nav aria-label="メインナビゲーション">
+    <a href="/#journeys">旅の記録</a>
+    <a href="/#making">道具とものづくり</a>
+    <a href="/#gear">愛車と装備</a>
+    <a href="/#about">このサイトについて</a>
+    <a href="/contact/">お問い合わせ</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="breadcrumb">
+    <a href="/">トップページ</a>　›　旅の記録一覧
+  </div>
+
+  <span class="eyebrow">RIDE JOURNAL</span>
+  <h1>旅の記録一覧</h1>
+  <p class="intro">
+    走ったルート、出会った景色、おいしかったもの。
+    実際に走って感じたことを、日付の新しい順にまとめています。
+  </p>
+
+  <div class="journey-grid" id="all-journeys" aria-live="polite">
+    <div class="journey-empty">記事を読み込んでいます…</div>
+  </div>
+
+  <a class="back-link" href="/">← トップページへ戻る</a>
+</main>
+
+<footer>
+  <span>走って、つくって。 © 2026</span>
+  <div class="footer-links">
+    <a href="/contact/">お問い合わせ</a>
+    <a href="/#journeys">旅の記録</a>
+    <a href="/#about">このサイトについて</a>
+  </div>
+</footer>
+
+<script src="/assets/js/journey-list.js"></script>
+</body>
+</html>
