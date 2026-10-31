@@ -224,6 +224,11 @@ async function load(){
 
   if(article){
     const slug=getSlug();
+    // 別府の記事だけ、フェリー航路と旅の数値を表示する
+    const beppuOnlyInfo = document.querySelector('#beppu-only-info');
+    if (beppuOnlyInfo) {
+      beppuOnlyInfo.hidden = slug !== 'beppu';
+    }
     const item=(data.journeys||[]).find(x=>x.slug===slug);
 
     if(!item){
