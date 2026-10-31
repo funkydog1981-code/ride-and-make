@@ -229,6 +229,11 @@ async function load(){
     if (beppuOnlyInfo) {
       beppuOnlyInfo.hidden = slug !== 'beppu';
     }
+    // 別府の記事だけ、日付と一人旅の表示を残す
+    const beppuOnlyDate = document.querySelector('#beppu-only-date');
+    if (beppuOnlyDate) {
+      beppuOnlyDate.hidden = slug !== 'beppu';
+    }
     const item=(data.journeys||[]).find(x=>x.slug===slug);
 
     if(!item){
