@@ -1,4 +1,8 @@
 [build]
   publish = "public"
 
-# 静的ファイルをそのまま配信します。ビルド処理は不要です。
+[[redirects]]
+  from = "/journeys/:slug/"
+  to = "/journey/?slug=:slug"
+  status = 200
+  force = false

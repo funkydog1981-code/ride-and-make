@@ -1,38 +1,22 @@
-# 走って、つくって。 Netlify移行用プロジェクト
+# 走って、つくって。CMS対応版
 
-2026年10月25日時点のサイトの書き出しです。HTML・インラインCSS・インラインJavaScript・画像・動画を元データのまま含みます。
+## 含まれるもの
+- 現在のデザイン・画像・動画を維持したサイト
+- `/admin/` のDecap CMS管理画面
+- `public/content/site.json` でトップページ、道具とものづくり、愛車と装備、このサイトについて、旅の記録を管理
+- GitHub `funkydog1981-code/ride-and-make` の `main` ブランチとNetlifyの自動デプロイ
 
-## Netlifyへの公開
+## Netlify公開
+Netlifyの公開ディレクトリは `public`。ビルドコマンドは不要です。`netlify.toml` は `/journeys/:slug/` を汎用記事テンプレートへリライトします。
 
-1. ZIPを解凍します。
-2. Netlifyの手動デプロイ画面に、`public`フォルダをドラッグ＆ドロップします。
-3. 発行されたURLでトップページ、別府の旅の記録、お問い合わせを確認します。
+## CMSログインの初期設定（GitHub OAuth）
+1. GitHubでOAuth Appを作成し、Authorization callback URLを `https://api.netlify.com/auth/done` に設定します。
+2. Netlifyの対象サイトでProject configuration内のAccess / OAuth provider設定を開き、GitHub Client IDとClient Secretを登録して有効化します。名称はNetlifyのUIにより多少異なる場合があります。
+3. `/admin/` にアクセスし、GitHubアカウントでログインします。リポジトリへの書き込み権限が必要です。
+4. CMS設定は `public/admin/config.yml`。リポジトリは `funkydog1981-code/ride-and-make`、ブランチは `main` です。
 
-Git連携の場合は、このプロジェクト全体をリポジトリに入れてください。`netlify.toml`で公開フォルダを`public`に指定済みです。ビルドコマンドやパッケージのインストールは不要です。
+## コンテンツ
+管理画面は `public/content/site.json` を編集します。画像はCMSから `public/assets/uploads/` に保存されます。記事本文はMarkdown対応です。既存の別府記事は元の動画・表・写真の配置を保持するためHTMLを一部含んでおり、本文を編集する際はHTMLタグを誤って削除しないよう注意してください。
 
-## 構成
-
-- `public/index.html`：トップページ（CSS・JavaScript内蔵）
-- `public/journeys/beppu/index.html`：別府の旅の記録（CSS内蔵）
-- `public/contact/index.html`：お問い合わせ（CSS内蔵）
-- `public/assets/`：画像・動画
-- `netlify.toml`：Netlify設定
-- `SHA256SUMS.json`：元ファイルとの一致確認用
-
-CSSとJavaScriptは元サイトと同じくHTMLに含まれています。外部ファイルへの分離やデザイン・機能の変更は行っていません。
-
-## 外部サービス
-
-お問い合わせは既存のTallyフォーム（https://tally.so/r/RWGEgd）をそのまま開きます。通知設定は既存のTally側で継続管理してください。Stravaの埋め込みは従来どおりStrava側のスクリプトと公開設定・サービス提供状況に依存します。これらの外部サービス自体はZIPに含まれません。
-
-## ローカル確認
-
-プロジェクトのフォルダで `python -m http.server 8000 --directory public` を実行し、http://localhost:8000/ を開きます。HTMLを直接ダブルクリックすると、ルート相対リンクは正常に動作しない場合があります。
-
-## 元サイト
-
-https://ride-and-make-notes.duskyhill16384.chatgpt.site/
-
-元サイトの公開・設定・ソースには変更を加えていません。このZIPの公開先とは別に維持されます。元サイトのソースコミット：23e9021b90b561ff23593e84b72820eb82082a94。
-
-自動更新テスト　2026/10/31
+## 注意
+このCMS対応版はテストサイトに先に反映してください。管理画面のOAuth設定が完了するまで `/admin/` のログインは利用できません。

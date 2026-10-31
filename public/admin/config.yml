@@ -1,0 +1,107 @@
+backend:
+  name: github
+  repo: funkydog1981-code/ride-and-make
+  branch: main
+
+media_folder: public/assets/uploads
+public_folder: /assets/uploads
+
+site_url: https://resonant-fairy-4cc735.netlify.app
+display_url: https://resonant-fairy-4cc735.netlify.app
+
+collections:
+  - name: site
+    label: サイト全体・記事
+    files:
+      - name: content
+        label: トップページ・各ページ・旅の記録
+        file: public/content/site.json
+        format: json
+        fields:
+          - label: トップページ
+            name: hero
+            widget: object
+            fields:
+              - {label: 小見出し, name: eyebrow, widget: string}
+              - {label: メイン見出し, name: title, widget: text, hint: 改行すると表示も改行されます}
+              - {label: 紹介文, name: description, widget: text}
+              - {label: ボタンの文字, name: button_label, widget: string}
+              - {label: 写真下の説明, name: caption, widget: string}
+              - {label: メイン画像, name: image, widget: image}
+              - {label: 画像の説明, name: image_alt, widget: string}
+          - label: 旅の記録セクション
+            name: journey_section
+            widget: object
+            fields:
+              - {label: 小見出し, name: eyebrow, widget: string}
+              - {label: 見出し, name: title, widget: string}
+              - {label: 説明文, name: description, widget: text}
+          - label: 道具とものづくり
+            name: making
+            widget: object
+            fields:
+              - {label: 小見出し, name: eyebrow, widget: string}
+              - {label: 見出し, name: title, widget: text}
+              - label: 紹介文
+                name: intro_paragraphs
+                widget: list
+                field: {label: 段落, name: paragraph, widget: text}
+              - label: 作品・プロジェクト
+                name: projects
+                widget: list
+                fields:
+                  - {label: 状態・ラベル, name: status, widget: string}
+                  - {label: タイトル, name: title, widget: text}
+                  - {label: 説明文, name: description, widget: text}
+                  - {label: 詳細の見出し, name: details_summary, widget: string}
+                  - {label: 詳細本文, name: details, widget: text}
+          - label: 愛車と装備
+            name: gear
+            widget: object
+            fields:
+              - {label: 小見出し, name: eyebrow, widget: string}
+              - {label: 見出し, name: title, widget: text}
+              - {label: 説明文, name: description, widget: text}
+              - {label: 愛車の写真, name: image, widget: image}
+              - {label: 写真の説明, name: image_alt, widget: string}
+              - label: 装備一覧
+                name: items
+                widget: list
+                fields:
+                  - {label: 項目名, name: label, widget: string}
+                  - {label: 製品・内容, name: value, widget: string}
+          - label: このサイトについて
+            name: about
+            widget: object
+            fields:
+              - {label: 小見出し, name: eyebrow, widget: string}
+              - {label: 見出し, name: title, widget: text}
+              - label: 経験年数
+                name: experience
+                widget: list
+                fields:
+                  - {label: 年数, name: value, widget: string}
+                  - {label: 項目, name: label, widget: string}
+              - label: 紹介文
+                name: paragraphs
+                widget: list
+                field: {label: 段落, name: paragraph, widget: text}
+          - label: 旅の記録（記事）
+            name: journeys
+            widget: list
+            summary: '{{fields.title}}（{{fields.date}}）'
+            fields:
+              - {label: URL用ID（英数字）, name: slug, widget: string, hint: 例 beppu。公開後に変更するとURLが変わります}
+              - {label: 記事タイトル, name: title, widget: string}
+              - {label: 日付, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false}
+              - {label: カテゴリー, name: category, widget: string}
+              - {label: 記事の概要, name: summary, widget: text}
+              - {label: 一覧用画像, name: image, widget: image}
+              - {label: 画像の説明, name: image_alt, widget: string}
+              - {label: 走行距離, name: distance, widget: string, required: false}
+              - {label: 獲得標高, name: ascent, widget: string, required: false}
+              - {label: 旅の時期, name: period, widget: string, required: false}
+              - {label: 記事トップ画像, name: hero_image, widget: image}
+              - {label: 記事冒頭の見出し, name: intro_title, widget: text}
+              - {label: 記事冒頭の紹介文, name: intro, widget: text}
+              - {label: 記事本文, name: body, widget: markdown, hint: 通常は見出し・文章・画像をMarkdownで編集できます。既存の別府記事は元のレイアウトを維持するためHTMLを含みます。}
