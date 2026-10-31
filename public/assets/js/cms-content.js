@@ -97,8 +97,7 @@ async function load(){
     if(hi){
       hi.src=hero.image||hi.src;
       hi.alt=hero.image_alt||'';
-      hi.style.maxWidth='100%';
-      hi.style.height='auto';
+      fixHeroImage(hi);
     }
 
     const js=data.journey_section||{};
