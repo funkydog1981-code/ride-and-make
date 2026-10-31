@@ -28,7 +28,7 @@ const safeMarkdown=(s)=>{
     :raw;
 };
 
-// 記事内の画像・表が画面からはみ出さないようにする
+// 記事本文の画像・表・動画を画面幅に収める
 function fixArticleImages(article){
   if(!article)return;
 
@@ -50,8 +50,21 @@ function fixArticleImages(article){
 
   article.querySelectorAll('video,iframe').forEach(media=>{
     media.style.maxWidth='100%';
-    media.style.height='auto';
   });
+
+  article.querySelectorAll('video').forEach(video=>{
+    video.style.width='100%';
+  });
+}
+
+// 最上部のヒーロー画像は、既存のCSSの高さ設定を維持する
+function fixHeroImage(img){
+  if(!img)return;
+  img.style.width='100%';
+  img.style.height='100%';
+  img.style.maxWidth='100%';
+  img.style.objectFit='cover';
+  img.style.display='block';
 }
 
 async function load(){
@@ -137,9 +150,9 @@ async function load(){
     set('#making .wrap > div:first-child .eyebrow',making.eyebrow);
     set('#making .wrap > div:first-child h2',making.title,true);
 
-    const intro=document.querySelector('#making .wrap > div:first-child');
-    if(intro){
-      const old=[...intro.querySelectorAll('p')];
+    const makingIntro=document.querySelector('#making .wrap > div:first-child');
+    if(makingIntro){
+      const old=[...makingIntro.querySelectorAll('p')];
 
       (making.intro_paragraphs||[]).forEach((p,i)=>{
         if(old[i])old[i].innerHTML=breaks(p);
@@ -223,12 +236,12 @@ async function load(){
     const meta=document.querySelector('meta[name="description"]');
     if(meta)meta.content=item.summary||'';
 
-    const img=document.querySelector('.hero > img');
-    if(img){
-      img.src=item.hero_image||item.image||hero.image;
-      img.alt=item.image_alt||'';
-      img.style.maxWidth='100%';
-      img.style.height='auto';
+    // 最上部の画像：画像の高さをautoに変更しない
+    const heroImg=document.querySelector('.hero > img');
+    if(heroImg){
+      heroImg.src=item.hero_image||item.image||hero.image||heroImg.src;
+      heroImg.alt=item.image_alt||'';
+      fixHeroImage(heroImg);
     }
 
     const tag=document.querySelector('.hero-copy .tag');
@@ -254,11 +267,11 @@ async function load(){
       if(facts[2])facts[2].textContent=dateLabel(item.date);
     }
 
-    // 記事本文を表示してから、画像・表のサイズを調整
+    // 本文の画像は画面幅に収める
     article.innerHTML=safeMarkdown(item.body||'');
     fixArticleImages(article);
 
-    // 記事内の目次を作成
+    // 目次を作成
     const toc=document.querySelector('.toc');
     if(toc){
       const heads=[...article.querySelectorAll('h2,h3')];
