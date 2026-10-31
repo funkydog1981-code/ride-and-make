@@ -105,7 +105,9 @@ async function load(){
     set('#journeys .section-head h2',js.title);
     set('#journeys .section-head p',js.description);
 
-    const journeys=data.journeys||[];
+    const journeys=(data.journeys||[])
+      .slice()
+      .sort((a,b)=>(Date.parse(b.date)||0)-(Date.parse(a.date)||0));
     const j=journeys[0];
     const feature=document.querySelector('#journeys .feature');
 
