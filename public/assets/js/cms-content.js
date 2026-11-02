@@ -1,305 +1,480 @@
 
-(()=>{
-const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const breaks=(v)=>esc(v).replace(/\r?\n/g,'<br>');
-const set=(sel,v,asBreaks=false)=>{
-  const e=document.querySelector(sel);
-  if(e)e.innerHTML=asBreaks?breaks(v):esc(v).replace(/\r?\n/g,'<br>');
-};
-const dateLabel=(v)=>{
-  if(!v)return '';
-  const d=new Date(v);
-  return isNaN(d)?v:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}`;
-};
-const getSlug=()=>{
-  const q=new URLSearchParams(location.search).get('slug');
-  if(q)return q;
-  const m=location.pathname.match(/\/journeys\/([^/]+)\/?$/);
-  return m?m[1]:'beppu';
-};
-const safeMarkdown=(s)=>{
-  if(!window.marked)return esc(s).replace(/\n/g,'<br>');
-  const raw=window.marked.parse(s||'');
-  return window.DOMPurify
-    ?DOMPurify.sanitize(raw,{
-      ADD_TAGS:['video','source','iframe'],
-      ADD_ATTR:['controls','muted','playsinline','preload','poster','src','type','allow','allowfullscreen','frameborder']
-    })
-    :raw;
-};
+(() => {
+  const esc = (v) =>
+    String(v ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c]));
 
-// 記事本文の画像・表・動画を画面幅に収める
-function fixArticleImages(article){
-  if(!article)return;
+  const breaks = (v) =>
+    esc(v).replace(/\r?\n/g, '<br>');
 
-  article.querySelectorAll('img').forEach(img=>{
-    img.style.maxWidth='100%';
-    img.style.height='auto';
-    img.style.width='auto';
-    img.style.display='block';
-    img.style.objectFit='contain';
-    img.style.margin='24px auto';
-  });
+  const set = (sel, v, asBreaks = false) => {
+    const e = document.querySelector(sel);
 
-  article.querySelectorAll('table').forEach(table=>{
-    table.style.maxWidth='100%';
-    table.style.width='100%';
-    table.style.display='block';
-    table.style.overflowX='auto';
-  });
+    if (e) {
+      e.innerHTML = asBreaks
+        ? breaks(v)
+        : esc(v).replace(/\r?\n/g, '<br>');
+    }
+  };
 
-  article.querySelectorAll('video,iframe').forEach(media=>{
-    media.style.maxWidth='100%';
-  });
+  const dateLabel = (v) => {
+    if (!v) return '';
 
-  article.querySelectorAll('video').forEach(video=>{
-    video.style.width='100%';
-  });
-}
+    const d = new Date(v);
 
-// 最上部のヒーロー画像は、既存のCSSの高さ設定を維持する
-function fixHeroImage(img){
-  if(!img)return;
-  img.style.width='100%';
-  img.style.height='100%';
-  img.style.maxWidth='100%';
-  img.style.objectFit='cover';
-  img.style.display='block';
-}
+    return isNaN(d)
+      ? v
+      : `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}`;
+  };
 
-async function load(){
-  let data;
+  const getSlug = () => {
+    const q = new URLSearchParams(location.search).get('slug');
 
-  try{
-    const r=await fetch('/content/site.json',{cache:'no-store'});
-    if(!r.ok)throw Error('content missing');
-    data=await r.json();
-  }catch(e){
-    return;
+    if (q) return q;
+
+    const m = location.pathname.match(/\/journeys\/([^/]+)\/?$/);
+
+    return m ? m[1] : 'beppu';
+  };
+
+  const safeMarkdown = (s) => {
+    if (!window.marked) {
+      return esc(s).replace(/\n/g, '<br>');
+    }
+
+    const raw = window.marked.parse(s || '');
+
+    return window.DOMPurify
+      ? DOMPurify.sanitize(raw, {
+          ADD_TAGS: ['video', 'source', 'iframe'],
+          ADD_ATTR: [
+            'controls',
+            'muted',
+            'playsinline',
+            'preload',
+            'poster',
+            'src',
+            'type',
+            'allow',
+            'allowfullscreen',
+            'frameborder'
+          ]
+        })
+      : raw;
+  };
+
+  function fixArticleImages(article) {
+    if (!article) return;
+
+    article.querySelectorAll('img').forEach(img => {
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      img.style.width = 'auto';
+      img.style.display = 'block';
+      img.style.objectFit = 'contain';
+      img.style.margin = '24px auto';
+    });
+
+    article.querySelectorAll('table').forEach(table => {
+      table.style.maxWidth = '100%';
+      table.style.width = '100%';
+      table.style.display = 'block';
+      table.style.overflowX = 'auto';
+    });
+
+    article.querySelectorAll('video, iframe').forEach(media => {
+      media.style.maxWidth = '100%';
+    });
+
+    article.querySelectorAll('video').forEach(video => {
+      video.style.width = '100%';
+    });
   }
 
-  const hero=data.hero||{};
+  function fixHeroImage(img) {
+    if (!img) return;
 
-  // トップページ
-  if(document.body.id==='top'||document.querySelector('#journeys')){
-    set('.hero-copy .eyebrow',hero.eyebrow);
-    set('.hero-copy h1',hero.title,true);
-    set('.hero-copy p',hero.description,true);
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.maxWidth = '100%';
+    img.style.objectFit = 'cover';
+    img.style.display = 'block';
+  }
 
-    const heroButton=document.querySelector('.hero-copy .button');
-    if(heroButton){
-      heroButton.innerHTML=esc(hero.button_label)+' <span aria-hidden="true">↘</span>';
-    }
+  async function load() {
+    let data;
 
-    set('.hero-caption',hero.caption);
-
-    const hi=document.querySelector('.hero-image img');
-    if(hi){
-      hi.src=hero.image||hi.src;
-      hi.alt=hero.image_alt||'';
-      fixHeroImage(hi);
-    }
-
-    const js=data.journey_section||{};
-    set('#journeys .section-head .eyebrow',js.eyebrow);
-    set('#journeys .section-head h2',js.title);
-    set('#journeys .section-head p',js.description);
-
-    const journeys=(data.journeys||[])
-      .slice()
-      .sort((a,b)=>(Date.parse(b.date)||0)-(Date.parse(a.date)||0));
-    const j=journeys[0];
-    const feature=document.querySelector('#journeys .feature');
-
-    if(j&&feature){
-      feature.href='/journeys/'+encodeURIComponent(j.slug)+'/';
-
-      const im=feature.querySelector('.feature-photo img');
-      if(im){
-        im.src=j.image||'';
-        im.alt=j.image_alt||'';
-        im.style.maxWidth='100%';
-        im.style.height='auto';
-      }
-
-      const cp=feature.querySelector('.feature-copy');
-      if(cp){
-        const pill=cp.querySelector('.pill');
-        if(pill)pill.textContent=j.category||'';
-
-        const h3=cp.querySelector('h3');
-        if(h3)h3.innerHTML=breaks(j.title||'');
-
-        const p=cp.querySelector('p');
-        if(p)p.textContent=j.summary||'';
-
-        const metas=cp.querySelectorAll('.meta b');
-        if(metas[0])metas[0].textContent=j.distance||'—';
-        if(metas[1])metas[1].textContent=j.ascent||'—';
-        if(metas[2])metas[2].textContent=j.period||dateLabel(j.date);
-      }
-    }
-
-    const latest=document.querySelector('#journeys .latest');
-    if(latest){
-      latest.innerHTML='<span>記事一覧</span>'+
-        journeys.map(x=>`<a href="/journeys/${encodeURIComponent(x.slug)}/">${esc(x.title)}　→</a>`).join('');
-    }
-
-    // 道具とものづくり
-    const making=data.making||{};
-    set('#making .wrap > div:first-child .eyebrow',making.eyebrow);
-    set('#making .wrap > div:first-child h2',making.title,true);
-
-    const makingIntro=document.querySelector('#making .wrap > div:first-child');
-    if(makingIntro){
-      const old=[...makingIntro.querySelectorAll('p')];
-
-      (making.intro_paragraphs||[]).forEach((p,i)=>{
-        if(old[i])old[i].innerHTML=breaks(p);
+    try {
+      const r = await fetch('/content/site.json', {
+        cache: 'no-store'
       });
 
-      for(let i=(making.intro_paragraphs||[]).length;i<old.length;i++){
-        old[i].remove();
-      }
-    }
+      if (!r.ok) throw Error('content missing');
 
-    const projWrap=document.querySelector('#making .wrap > .project-list');
-    if(projWrap){
-      projWrap.innerHTML=(making.projects||[]).map(p=>
-        `<div class="project">
-          <span class="status">${esc(p.status)}</span>
-          <h3>${breaks(p.title)}</h3>
-          <p>${esc(p.description)}</p>
-          <details class="project-details">
-            <summary>${esc(p.details_summary)}</summary>
-            <p>${esc(p.details)}</p>
-          </details>
-        </div>`
-      ).join('');
-    }
-
-    // 愛車と装備
-    const gear=data.gear||{};
-    set('#gear .eyebrow',gear.eyebrow);
-    set('#gear h2',gear.title,true);
-    set('#gear > div p',gear.description);
-
-    const gi=document.querySelector('#gear .gear-photo img');
-    if(gi){
-      gi.src=gear.image||gi.src;
-      gi.alt=gear.image_alt||'';
-      gi.style.maxWidth='100%';
-      gi.style.height='auto';
-    }
-
-    const gl=document.querySelector('#gear .gear-list');
-    if(gl){
-      gl.innerHTML=(gear.items||[]).map(i=>
-        `<div><b>${esc(i.label)}</b><span>${esc(i.value)}</span></div>`
-      ).join('');
-    }
-
-    // このサイトについて
-    const about=data.about||{};
-    set('#about .eyebrow',about.eyebrow);
-    set('#about h2',about.title,true);
-
-    const exp=document.querySelector('#about .experience');
-    if(exp){
-      exp.innerHTML=(about.experience||[]).map(i=>
-        `<div><strong>${esc(i.value)}</strong><small>${esc(i.label)}</small></div>`
-      ).join('');
-    }
-
-    const aboutText=document.querySelector('#about .about-inner > div:nth-child(2)');
-    if(aboutText){
-      aboutText.innerHTML=(about.paragraphs||[]).map(p=>
-        `<p>${esc(p)}</p>`
-      ).join('');
-    }
-  }
-
-  // 記事ページ
-  const article=document.querySelector('#article-body');
-
-  if(article){
-    const slug=getSlug();
-    // 別府の記事だけ、フェリー航路と旅の数値を表示する
-    const beppuOnlyInfo = document.querySelector('#beppu-only-info');
-    if (beppuOnlyInfo) {
-      beppuOnlyInfo.hidden = slug !== 'beppu';
-    }
-    // 別府の記事だけ、日付と一人旅の表示を残す
-    const beppuOnlyDate = document.querySelector('#beppu-only-date');
-    if (beppuOnlyDate) {
-      beppuOnlyDate.hidden = slug !== 'beppu';
-    }
-    const item=(data.journeys||[]).find(x=>x.slug===slug);
-
-    if(!item){
-      article.innerHTML='<p>記事が見つかりません。管理画面で記事のURL用IDを確認してください。</p>';
+      data = await r.json();
+    } catch (e) {
+      console.error('site.json の読み込みに失敗しました', e);
       return;
     }
 
-    document.title=`${item.title}｜走って、つくって。`;
+    const hero = data.hero || {};
 
-    const meta=document.querySelector('meta[name="description"]');
-    if(meta)meta.content=item.summary||'';
+    // ========================================
+    // トップページ・旅の記録ページ
+    // ========================================
 
-    // 最上部の画像：画像の高さをautoに変更しない
-    const heroImg=document.querySelector('.hero > img');
-    if(heroImg){
-      heroImg.src=item.hero_image||item.image||hero.image||heroImg.src;
-      heroImg.alt=item.image_alt||'';
-      fixHeroImage(heroImg);
+    if (
+      document.body.id === 'top' ||
+      document.querySelector('#journeys')
+    ) {
+      set('.hero-copy .eyebrow', hero.eyebrow);
+      set('.hero-copy h1', hero.title, true);
+      set('.hero-copy p', hero.description, true);
+
+      const heroButton = document.querySelector('.hero-copy .button');
+
+      if (heroButton) {
+        heroButton.innerHTML =
+          esc(hero.button_label) +
+          ' <span aria-hidden="true">↘</span>';
+      }
+
+      set('.hero-caption', hero.caption);
+
+      const hi = document.querySelector('.hero-image img');
+
+      if (hi) {
+        hi.src = hero.image || hi.src;
+        hi.alt = hero.image_alt || '';
+        fixHeroImage(hi);
+      }
+
+      const js = data.journey_section || {};
+
+      set('#journeys .section-head .eyebrow', js.eyebrow);
+      set('#journeys .section-head h2', js.title);
+      set('#journeys .section-head p', js.description);
+
+      // 記事を日付の新しい順に並べる
+      const journeys = (data.journeys || [])
+        .slice()
+        .sort((a, b) =>
+          (Date.parse(b.date) || 0) -
+          (Date.parse(a.date) || 0)
+        );
+
+      const j = journeys[0];
+      const feature = document.querySelector('#journeys .feature');
+
+      if (j && feature) {
+        feature.href = '/journeys/' + encodeURIComponent(j.slug) + '/';
+
+        const im = feature.querySelector('.feature-photo img');
+
+        if (im) {
+          im.src = j.image || '';
+          im.alt = j.image_alt || '';
+          im.style.maxWidth = '100%';
+          im.style.height = 'auto';
+        }
+
+        const cp = feature.querySelector('.feature-copy');
+
+        if (cp) {
+          const pill = cp.querySelector('.pill');
+
+          if (pill) pill.textContent = j.category || '';
+
+          const h3 = cp.querySelector('h3');
+
+          if (h3) h3.innerHTML = breaks(j.title || '');
+
+          const p = cp.querySelector('p');
+
+          if (p) p.textContent = j.summary || '';
+
+          const metas = cp.querySelectorAll('.meta b');
+
+          if (metas[0]) metas[0].textContent = j.distance || '—';
+          if (metas[1]) metas[1].textContent = j.ascent || '—';
+          if (metas[2]) metas[2].textContent = j.period || dateLabel(j.date);
+        }
+      }
+
+      const latest = document.querySelector('#journeys .latest');
+
+      if (latest) {
+        latest.innerHTML =
+          '<span>記事一覧</span>' +
+          journeys.map(x =>
+            `<a href="/journeys/${encodeURIComponent(x.slug)}/">${esc(x.title)}　→</a>`
+          ).join('');
+      }
+
+      // ========================================
+      // 道具とものづくり
+      // ========================================
+
+      const making = data.making || {};
+
+      set('#making .wrap > div:first-child .eyebrow', making.eyebrow);
+      set('#making .wrap > div:first-child h2', making.title, true);
+
+      const makingIntro = document.querySelector(
+        '#making .wrap > div:first-child'
+      );
+
+      if (makingIntro) {
+        const old = [...makingIntro.querySelectorAll('p')];
+
+        (making.intro_paragraphs || []).forEach((p, i) => {
+          if (old[i]) old[i].innerHTML = breaks(p);
+        });
+
+        for (
+          let i = (making.intro_paragraphs || []).length;
+          i < old.length;
+          i++
+        ) {
+          old[i].remove();
+        }
+      }
+
+      const projWrap = document.querySelector(
+        '#making .wrap > .project-list'
+      );
+
+      if (projWrap) {
+        projWrap.innerHTML = (making.projects || []).map(p =>
+          `<div class="project">
+            <span class="status">${esc(p.status)}</span>
+            <h3>${breaks(p.title)}</h3>
+            <p>${esc(p.description)}</p>
+            <details class="project-details">
+              <summary>${esc(p.details_summary)}</summary>
+              <p>${esc(p.details)}</p>
+            </details>
+          </div>`
+        ).join('');
+      }
+
+      // ========================================
+      // 愛車と装備
+      // ========================================
+
+      const gear = data.gear || {};
+
+      set('#gear .eyebrow', gear.eyebrow);
+      set('#gear h2', gear.title, true);
+      set('#gear > div p', gear.description);
+
+      const gi = document.querySelector('#gear .gear-photo img');
+
+      if (gi) {
+        gi.src = gear.image || gi.src;
+        gi.alt = gear.image_alt || '';
+        gi.style.maxWidth = '100%';
+        gi.style.height = 'auto';
+      }
+
+      const gl = document.querySelector('#gear .gear-list');
+
+      if (gl) {
+        gl.innerHTML = (gear.items || []).map(i =>
+          `<div>
+            <b>${esc(i.label)}</b>
+            <span>${esc(i.value)}</span>
+          </div>`
+        ).join('');
+      }
+
+      // ========================================
+      // このサイトについて
+      // ========================================
+
+      const about = data.about || {};
+
+      set('#about .eyebrow', about.eyebrow);
+      set('#about h2', about.title, true);
+
+      const exp = document.querySelector('#about .experience');
+
+      if (exp) {
+        exp.innerHTML = (about.experience || []).map(i =>
+          `<div>
+            <strong>${esc(i.value)}</strong>
+            <small>${esc(i.label)}</small>
+          </div>`
+        ).join('');
+      }
+
+      const aboutText = document.querySelector(
+        '#about .about-inner > div:nth-child(2)'
+      );
+
+      if (aboutText) {
+        aboutText.innerHTML = (about.paragraphs || []).map(p =>
+          `<p>${esc(p)}</p>`
+        ).join('');
+      }
     }
 
-    const tag=document.querySelector('.hero-copy .tag');
-    if(tag)tag.textContent=item.category||'';
+    // ========================================
+    // 個別記事ページ
+    // ========================================
 
-    const h=document.querySelector('.hero-copy h1');
-    if(h)h.innerHTML=breaks(item.title||'');
+    const article = document.querySelector('#article-body');
 
-    const hp=document.querySelector('.hero-copy p');
-    if(hp)hp.textContent=item.summary||'';
+    if (article) {
+      const slug = getSlug();
+      console.log('記事のslug:', slug);
 
-    const intro=document.querySelector('.intro');
-    if(intro){
-      const h2=intro.querySelector('h2');
-      if(h2)h2.innerHTML=breaks(item.intro_title||item.title);
+      const beppuOnlyInfo = document.querySelector('#beppu-only-info');
 
-      const p=intro.querySelector('p');
-      if(p)p.textContent=item.intro||item.summary;
+      if (beppuOnlyInfo) {
+        beppuOnlyInfo.hidden = slug !== 'beppu';
+      }
 
-      const facts=intro.querySelectorAll('.facts strong');
-      if(facts[0])facts[0].textContent=item.distance||'—';
-      if(facts[1])facts[1].textContent=item.ascent||'—';
-      if(facts[2])facts[2].textContent=dateLabel(item.date);
-    }
+      const beppuOnlyDate = document.querySelector('#beppu-only-date');
 
-    // 本文の画像は画面幅に収める
-    article.innerHTML=safeMarkdown(item.body||'');
-    fixArticleImages(article);
+      if (beppuOnlyDate) {
+        beppuOnlyDate.hidden = slug !== 'beppu';
+      }
 
-    // 目次を作成
-    const toc=document.querySelector('.toc');
-    if(toc){
-      const heads=[...article.querySelectorAll('h2,h3')];
+      const item = (data.journeys || []).find(x => x.slug === slug);
 
-      toc.innerHTML='<p>IN THIS JOURNAL</p>'+
-        heads.map((h,i)=>{
-          const id='article-section-'+(i+1);
-          h.id=id;
-          return `<a href="#${id}">${esc(h.textContent)}</a>`;
-        }).join('');
+      if (!item) {
+        article.innerHTML =
+          '<p>記事が見つかりません。管理画面で記事のURL用IDを確認してください。</p>';
+        return;
+      }
+
+      document.title = `${item.title}｜走って、つくって。`;
+
+      const meta = document.querySelector('meta[name="description"]');
+
+      if (meta) meta.content = item.summary || '';
+
+      const heroImg = document.querySelector('.hero > img');
+
+      if (heroImg) {
+        heroImg.src = item.hero_image || item.image || hero.image || heroImg.src;
+        heroImg.alt = item.image_alt || '';
+        fixHeroImage(heroImg);
+      }
+
+      const tag = document.querySelector('.hero-copy .tag');
+
+      if (tag) {
+        tag.textContent = item.hero_tag || item.category || '';
+      }
+
+      const h = document.querySelector('.hero-copy h1');
+
+      if (h) h.innerHTML = breaks(item.title || '');
+
+      const hp = document.querySelector('.hero-copy p');
+
+      if (hp) hp.textContent = item.summary || '';
+
+      const breadcrumb = document.querySelector('#article-breadcrumb');
+
+      if (breadcrumb) breadcrumb.textContent = item.title || '';
+
+      const articleDate = document.querySelector('#article-date');
+      if (articleDate) {
+        articleDate.textContent =
+          item.article_date_label ||
+          dateLabel(item.date) +
+          (item.period ? '　｜　' + item.period : '');
+      }
+      // ========================================
+      // 記事冒頭の概要・数値
+      // ========================================
+
+      const intro = document.querySelector('.intro');
+
+      if (intro) {
+        const h2 = intro.querySelector('h2');
+
+        if (h2) {
+          h2.innerHTML = breaks(item.intro_title || item.title);
+        }
+
+        const p = intro.querySelector('p');
+
+        if (p) {
+          p.textContent = item.intro || item.summary;
+        }
+
+        const facts = intro.querySelectorAll('.facts > div');
+
+
+        // 数値は項目の位置だけでなく、ラベルを確認して更新する。
+        // 3番目の項目は記事によって「フェリー支払額」または「開催月」になるため、
+        // 位置だけで判定するとフェリー料金を開催月で上書きしてしまう。
+        if (slug !== 'beppu') {
+          if (facts[0]) {
+            const value = facts[0].querySelector('strong');
+            if (value) {
+              value.textContent =
+                (item.distance || '—').replace(/\s*km$/i, '');
+            }
+          }
+
+          if (facts[1]) {
+            const value = facts[1].querySelector('strong');
+            if (value) {
+              value.textContent =
+                (item.ascent || '—').replace(/\s*m$/i, '');
+            }
+          }
+
+          const monthFact = [...facts].find(fact =>
+            fact.querySelector('small')?.textContent.trim() === '開催月'
+          );
+
+          if (monthFact) {
+            const value = monthFact.querySelector('strong');
+            if (value) value.textContent = dateLabel(item.date);
+          }
+        }
+      }
+
+      // ========================================
+      // 本文・画像・目次
+      // ========================================
+
+      article.innerHTML = safeMarkdown(item.body || '');
+
+      fixArticleImages(article);
+
+      const toc = document.querySelector('.toc');
+
+      if (toc) {
+        const heads = [...article.querySelectorAll('h2, h3')];
+
+        toc.innerHTML =
+          '<p>IN THIS JOURNAL</p>' +
+          heads.map((h, i) => {
+            const id = 'article-section-' + (i + 1);
+
+            h.id = id;
+
+            return `<a href="#${id}">${esc(h.textContent)}</a>`;
+          }).join('');
+      }
     }
   }
-}
 
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',load);
-}else{
-  load();
-}
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', load);
+  } else {
+    load();
+  }
 })();

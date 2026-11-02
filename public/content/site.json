@@ -89,7 +89,9 @@
       "title": "別府から、やまなみへ。",
       "ascent": "1,981 m",
       "image": "/assets/view.webp",
-      "category": "大分 / フェリー × ロードバイク"
+      "category": "大分 / フェリー × ロードバイク",
+      "hero_tag": "大分 / フェリー × ロードバイク",
+      "article_date_label": "2026.08.22 — 08.24　｜　一人旅"
     },
     {
       "period": "2026.10",
@@ -105,7 +107,9 @@
       "title": "丹波の秋を走る！黒豆ライド",
       "ascent": "830 m",
       "image": "/assets/uploads/コスモスアップ.jpg",
-      "category": "丹波 / ロードバイク"
+      "category": "丹波 / ロードバイク",
+      "hero_tag":  "丹波 / ロードバイク",
+      "article_date_label": "2026.10.18　｜　グループライド"
     }
   ]
 }
