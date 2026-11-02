@@ -86,22 +86,40 @@ collections:
                 name: paragraphs
                 widget: list
                 field: {label: 段落, name: paragraph, widget: text}
-          - label: 旅の記録（記事）
-            name: journeys
-            widget: list
-            summary: '{{fields.title}}（{{fields.date}}）'
-            fields:
-              - {label: URL用ID（英数字）, name: slug, widget: string, hint: 例 beppu。公開後に変更するとURLが変わります}
-              - {label: 記事タイトル, name: title, widget: string}
-              - {label: 日付, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false}
-              - {label: カテゴリー, name: category, widget: string}
-              - {label: 記事の概要, name: summary, widget: text}
-              - {label: 一覧用画像, name: image, widget: image}
-              - {label: 画像の説明, name: image_alt, widget: string}
-              - {label: 走行距離, name: distance, widget: string, required: false}
-              - {label: 獲得標高, name: ascent, widget: string, required: false}
-              - {label: 旅の時期, name: period, widget: string, required: false}
-              - {label: 記事トップ画像, name: hero_image, widget: image}
-              - {label: 記事冒頭の見出し, name: intro_title, widget: text}
-              - {label: 記事冒頭の紹介文, name: intro, widget: text}
-              - {label: 記事本文, name: body, widget: markdown, hint: 通常は見出し・文章・画像をMarkdownで編集できます。既存の別府記事は元のレイアウトを維持するためHTMLを含みます。}
+              - label: 旅の記録（記事）
+                name: journeys
+                widget: list
+                summary: '{{fields.title}}（{{fields.date}}）'
+                fields:
+                  - {label: URL用ID（英数字）, name: slug, widget: string, hint: 例 beppu。公開後に変更するとURLが変わります}
+                  - {label: 記事タイトル, name: title, widget: string}
+                  - {label: 日付, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false}
+                  - {label: 地域名, name: region, widget: string, hint: 例：丹波、大分、しまなみ海道}
+                  - label: ライドカテゴリー
+                    name: ride_category
+                    widget: select
+                    options:
+                      - {label: 日帰りグループライド, value: 日帰りグループライド}
+                      - {label: 日帰りソロライド, value: 日帰りソロライド}
+                      - {label: 宿泊グループライド, value: 宿泊グループライド}
+                      - {label: 宿泊ソロライド, value: 宿泊ソロライド}
+                      - {label: イベントライド, value: イベントライド}
+                  - {label: 記事の概要, name: summary, widget: text}
+                  - {label: 一覧用画像, name: image, widget: image}
+                  - {label: 一覧用画像の説明（ALT TEXT）, name: image_alt, widget: string}
+                  - {label: 走行距離, name: distance, widget: string, required: false}
+                  - {label: 獲得標高, name: ascent, widget: string, required: false}
+                  - {label: 旅の時期, name: period, widget: string, required: false, hint: 例：2026年10月18日、2026年8月22日〜24日}
+                  - label: その他の走行情報
+                    name: ride_details
+                    widget: list
+                    required: false
+                    fields:
+                      - {label: 項目名, name: label, widget: string}
+                      - {label: 内容, name: value, widget: string}
+                  - {label: 記事トップ画像, name: hero_image, widget: image}
+                  - {label: トップ画像の説明（ALT TEXT）, name: hero_image_alt, widget: string, required: false}
+                  - {label: トップ画像のキャプション, name: hero_image_caption, widget: string, required: false}
+                  - {label: 記事冒頭の見出し, name: intro_title, widget: text}
+                  - {label: 記事冒頭の紹介文, name: intro, widget: text}
+                  - {label: 記事本文, name: body, widget: markdown, hint: 通常は見出し・文章・画像をMarkdownで編集できます。既存の別府記事は元のレイアウトを維持するためHTMLを含みます。}
