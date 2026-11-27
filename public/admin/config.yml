@@ -1,3 +1,5 @@
+local_backend: true
+
 backend:
   name: github
   repo: funkydog1981-code/ride-and-make
@@ -86,40 +88,64 @@ collections:
                 name: paragraphs
                 widget: list
                 field: {label: 段落, name: paragraph, widget: text}
-              - label: 旅の記録（記事）
-                name: journeys
+          - label: 旅の記録（記事）
+            name: journeys
+            widget: list
+            summary: '{{fields.title}}（{{fields.date}}）'
+            fields:
+              - {label: URL用ID（英数字）, name: slug, widget: string, hint: 例 beppu。公開後に変更するとURLが変わります}
+              - {label: 記事タイトル, name: title, widget: string}
+              - {label: 日付, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false}
+              - {label: 地域名, name: region, widget: string, hint: 例：丹波、大分、しまなみ海道}
+              - label: ライドカテゴリー
+                name: ride_category
+                widget: select
+                options:
+                  - {label: 日帰りグループライド, value: 日帰りグループライド}
+                  - {label: 日帰りソロライド, value: 日帰りソロライド}
+                  - {label: 宿泊グループライド, value: 宿泊グループライド}
+                  - {label: 宿泊ソロライド, value: 宿泊ソロライド}
+                  - {label: イベントライド, value: イベントライド}
+              - {label: 記事の概要, name: summary, widget: text}
+              - {label: 一覧用画像, name: image, widget: image}
+              - {label: 一覧用画像の説明（ALT TEXT）, name: image_alt, widget: string}
+              - {label: 走行距離, name: distance, widget: string, required: false}
+              - {label: 獲得標高, name: ascent, widget: string, required: false}
+              - {label: 旅の時期, name: period, widget: string, required: false, hint: 例：2026年10月18日、2026年8月22日〜24日}
+              - label: その他の走行情報
+                name: ride_details
                 widget: list
-                summary: '{{fields.title}}（{{fields.date}}）'
+                required: false
                 fields:
-                  - {label: URL用ID（英数字）, name: slug, widget: string, hint: 例 beppu。公開後に変更するとURLが変わります}
-                  - {label: 記事タイトル, name: title, widget: string}
-                  - {label: 日付, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false}
-                  - {label: 地域名, name: region, widget: string, hint: 例：丹波、大分、しまなみ海道}
-                  - label: ライドカテゴリー
-                    name: ride_category
-                    widget: select
-                    options:
-                      - {label: 日帰りグループライド, value: 日帰りグループライド}
-                      - {label: 日帰りソロライド, value: 日帰りソロライド}
-                      - {label: 宿泊グループライド, value: 宿泊グループライド}
-                      - {label: 宿泊ソロライド, value: 宿泊ソロライド}
-                      - {label: イベントライド, value: イベントライド}
-                  - {label: 記事の概要, name: summary, widget: text}
-                  - {label: 一覧用画像, name: image, widget: image}
-                  - {label: 一覧用画像の説明（ALT TEXT）, name: image_alt, widget: string}
-                  - {label: 走行距離, name: distance, widget: string, required: false}
-                  - {label: 獲得標高, name: ascent, widget: string, required: false}
-                  - {label: 旅の時期, name: period, widget: string, required: false, hint: 例：2026年10月18日、2026年8月22日〜24日}
-                  - label: その他の走行情報
-                    name: ride_details
-                    widget: list
-                    required: false
-                    fields:
-                      - {label: 項目名, name: label, widget: string}
-                      - {label: 内容, name: value, widget: string}
-                  - {label: 記事トップ画像, name: hero_image, widget: image}
-                  - {label: トップ画像の説明（ALT TEXT）, name: hero_image_alt, widget: string, required: false}
-                  - {label: トップ画像のキャプション, name: hero_image_caption, widget: string, required: false}
-                  - {label: 記事冒頭の見出し, name: intro_title, widget: text}
-                  - {label: 記事冒頭の紹介文, name: intro, widget: text}
-                  - {label: 記事本文, name: body, widget: markdown, hint: 通常は見出し・文章・画像をMarkdownで編集できます。既存の別府記事は元のレイアウトを維持するためHTMLを含みます。}
+                  - {label: 項目名, name: label, widget: string}
+                  - {label: 内容, name: value, widget: string}
+              - {label: 記事トップ画像, name: hero_image, widget: image}
+              - {label: トップ画像の説明（ALT TEXT）, name: hero_image_alt, widget: string, required: false}
+              - {label: トップ画像のキャプション, name: hero_image_caption, widget: string, required: false}
+              - {label: 記事冒頭の見出し, name: intro_title, widget: text}
+              - {label: 記事冒頭の紹介文, name: intro, widget: text}
+              - {label: 記事本文, name: body, widget: markdown, hint: 通常は見出し・文章・画像をMarkdownで編集できます。既存の別府記事は元のレイアウトを維持するためHTMLを含みます。}
+
+          - label: 道具とものづくり（記事）
+            name: making_articles
+            widget: list
+            summary: '{{fields.title}}（{{fields.date}}）'
+            fields:
+              - label: URL用ID（英数字）
+                name: slug
+                widget: string
+                required: true
+                hint: 例 radar-mount。半角英小文字・数字・ハイフンのみ使用し、先頭と末尾は英数字にしてください。他の制作記事と同じIDは使用できません。
+                pattern: ['^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$', 'URL用IDは必須です。半角英小文字・数字・ハイフンのみ使用し、先頭と末尾は英数字にしてください。']
+              - {label: 記事タイトル, name: title, widget: string}
+              - {label: 公開日, name: date, widget: datetime, default: '{{now}}', date_format: YYYY-MM-DD, time_format: false}
+              - {label: 記事の概要, name: summary, widget: text}
+              - {label: 一覧用画像, name: image, widget: image}
+              - {label: 一覧用画像の説明（ALT TEXT）, name: image_alt, widget: string, required: false}
+              - {label: 記事トップ画像, name: hero_image, widget: image}
+              - {label: トップ画像の説明（ALT TEXT）, name: hero_image_alt, widget: string, required: false}
+              - {label: トップ画像のキャプション, name: hero_image_caption, widget: string, required: false}
+              - label: カテゴリー・制作情報
+                name: making_info
+                widget: making_info
+              - {label: 記事本文, name: body, widget: markdown, hint: 見出し・文章・画像・動画などを自由に記述します}

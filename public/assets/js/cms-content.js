@@ -1,4 +1,3 @@
-
 (() => {
   const esc = (v) =>
     String(v ?? '').replace(/[&<>"']/g, c => ({
@@ -32,6 +31,10 @@
       : `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}`;
   };
 
+  // すべての記事をCMS共通テンプレートで表示する。
+  const articleUrl = (slug) =>
+    `/journey/?slug=${encodeURIComponent(slug)}`;
+
   const getSlug = () => {
     const q = new URLSearchParams(location.search).get('slug');
 
@@ -39,7 +42,7 @@
 
     const m = location.pathname.match(/\/journeys\/([^/]+)\/?$/);
 
-    return m ? m[1] : 'beppu';
+    return m ? m[1] : '';
   };
 
   const safeMarkdown = (s) => {
@@ -49,8 +52,8 @@
 
     const raw = window.marked.parse(s || '');
 
-    return window.DOMPurify
-      ? DOMPurify.sanitize(raw, {
+    return window.DOMPurify && window.RakutenLinks
+      ? window.RakutenLinks.sanitize(raw, {
           ADD_TAGS: ['video', 'source', 'iframe'],
           ADD_ATTR: [
             'controls',
@@ -62,16 +65,26 @@
             'type',
             'allow',
             'allowfullscreen',
-            'frameborder'
+            'frameborder',
+            'target', 'rel'
           ]
         })
-      : raw;
+      : esc(s).replace(/\n/g, '<br>');
   };
 
   function fixArticleImages(article) {
     if (!article) return;
+    article.querySelectorAll('a').forEach(anchor => {
+      if (window.RakutenLinks?.check(anchor).valid) return;
+      const rel = (anchor.getAttribute('rel') || '').toLowerCase().split(/\s+/).filter(v => ['nofollow', 'sponsored', 'ugc', 'noopener', 'noreferrer'].includes(v));
+      if (anchor.getAttribute('target') === '_blank') {
+        if (!rel.includes('noopener')) rel.push('noopener');
+      } else anchor.removeAttribute('target');
+      anchor.setAttribute('rel', [...new Set(rel)].join(' ') || 'noopener noreferrer');
+    });
 
     article.querySelectorAll('img').forEach(img => {
+      if (img.closest('.product-card')) return;
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
       img.style.width = 'auto';
@@ -91,6 +104,18 @@
       media.style.maxWidth = '100%';
     });
 
+    article.querySelectorAll('iframe').forEach(frame => {
+      let url;
+      try { url = new URL(frame.getAttribute('src') || ''); } catch { return; }
+      if (!['youtube.com', 'www.youtube.com', 'youtube-nocookie.com', 'www.youtube-nocookie.com'].includes(url.hostname)) return;
+      if (url.protocol !== 'https:' || url.port || url.username || url.password || !/^\/embed\/[A-Za-z0-9_-]{11}$/.test(url.pathname)) {
+        frame.remove(); return;
+      }
+      if (!frame.title.trim()) frame.title = 'YouTube動画';
+      frame.loading = 'lazy';
+      frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    });
+
     article.querySelectorAll('video').forEach(video => {
       video.style.width = '100%';
     });
@@ -104,6 +129,33 @@
     img.style.maxWidth = '100%';
     img.style.objectFit = 'cover';
     img.style.display = 'block';
+  }
+
+  function addHeroCaptionStyle() {
+    if (document.getElementById('cms-hero-caption-style')) return;
+
+    const style = document.createElement('style');
+    style.id = 'cms-hero-caption-style';
+
+    style.textContent = `
+      .hero-image-caption {
+        max-width: 1200px;
+        margin: 8px auto 0;
+        padding: 0 28px;
+        color: #64716b;
+        font-size: 11px;
+        line-height: 1.7;
+        text-align: right;
+      }
+
+      @media (max-width: 800px) {
+        .hero-image-caption {
+          padding: 0 24px;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
   }
 
   async function load() {
@@ -129,7 +181,6 @@
     // ========================================
 
     if (
-      document.body.id === 'top' ||
       document.querySelector('#journeys')
     ) {
       set('.hero-copy .eyebrow', hero.eyebrow);
@@ -172,7 +223,7 @@
       const feature = document.querySelector('#journeys .feature');
 
       if (j && feature) {
-        feature.href = '/journeys/' + encodeURIComponent(j.slug) + '/';
+        feature.href = articleUrl(j.slug);
 
         const im = feature.querySelector('.feature-photo img');
 
@@ -188,7 +239,10 @@
         if (cp) {
           const pill = cp.querySelector('.pill');
 
-          if (pill) pill.textContent = j.category || '';
+          if (pill) {
+            pill.textContent =
+              [j.region, j.ride_category].filter(Boolean).join(' / ');
+          }
 
           const h3 = cp.querySelector('h3');
 
@@ -212,7 +266,7 @@
         latest.innerHTML =
           '<span>記事一覧</span>' +
           journeys.map(x =>
-            `<a href="/journeys/${encodeURIComponent(x.slug)}/">${esc(x.title)}　→</a>`
+            `<a href="${articleUrl(x.slug)}">${esc(x.title)}　→</a>`
           ).join('');
       }
 
@@ -318,9 +372,11 @@
       );
 
       if (aboutText) {
+        const channel = aboutText.querySelector('.youtube-channel');
         aboutText.innerHTML = (about.paragraphs || []).map(p =>
           `<p>${esc(p)}</p>`
         ).join('');
+        if (channel) aboutText.appendChild(channel);
       }
     }
 
@@ -333,18 +389,6 @@
     if (article) {
       const slug = getSlug();
       console.log('記事のslug:', slug);
-
-      const beppuOnlyInfo = document.querySelector('#beppu-only-info');
-
-      if (beppuOnlyInfo) {
-        beppuOnlyInfo.hidden = slug !== 'beppu';
-      }
-
-      const beppuOnlyDate = document.querySelector('#beppu-only-date');
-
-      if (beppuOnlyDate) {
-        beppuOnlyDate.hidden = slug !== 'beppu';
-      }
 
       const item = (data.journeys || []).find(x => x.slug === slug);
 
@@ -363,15 +407,49 @@
       const heroImg = document.querySelector('.hero > img');
 
       if (heroImg) {
-        heroImg.src = item.hero_image || item.image || hero.image || heroImg.src;
-        heroImg.alt = item.image_alt || '';
+        heroImg.src =
+          item.hero_image ||
+          item.image ||
+          hero.image ||
+          heroImg.src;
+
+        // 記事トップ画像と一覧画像のALTを分ける。
+        // 旧記事は従来のALTを引き継ぐ。
+        heroImg.alt = item.hero_image_alt || item.image_alt || '';
+
         fixHeroImage(heroImg);
+      }
+
+      // 記事トップ画像の説明（未入力なら表示しない）
+      addHeroCaptionStyle();
+
+      const heroSection = document.querySelector('.hero');
+      let heroCaption = document.querySelector('.hero-image-caption');
+
+      if (item.hero_image_caption && heroSection) {
+        if (!heroCaption) {
+          heroCaption = document.createElement('p');
+          heroCaption.className = 'hero-image-caption';
+          heroSection.insertAdjacentElement('afterend', heroCaption);
+        }
+
+        heroCaption.textContent = item.hero_image_caption;
+      } else if (heroCaption) {
+        heroCaption.remove();
       }
 
       const tag = document.querySelector('.hero-copy .tag');
 
       if (tag) {
-        tag.textContent = item.hero_tag || item.category || '';
+        tag.remove();
+      }
+
+      // 記事上部のカテゴリー表示を自動生成
+      const articleCategoryLabel = document.querySelector('#article-category-label');
+
+      if (articleCategoryLabel) {
+        articleCategoryLabel.textContent =
+          [item.region, item.ride_category].filter(Boolean).join(' / ');
       }
 
       const h = document.querySelector('.hero-copy h1');
@@ -380,19 +458,24 @@
 
       const hp = document.querySelector('.hero-copy p');
 
-      if (hp) hp.textContent = item.summary || '';
+      if (hp) {
+        hp.innerHTML = (item.summary || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\r\n|\r|\n/g, '<br>');
+      }
 
       const breadcrumb = document.querySelector('#article-breadcrumb');
 
       if (breadcrumb) breadcrumb.textContent = item.title || '';
 
       const articleDate = document.querySelector('#article-date');
+
       if (articleDate) {
-        articleDate.textContent =
-          item.article_date_label ||
-          dateLabel(item.date) +
-          (item.period ? '　｜　' + item.period : '');
+        articleDate.textContent = item.period || dateLabel(item.date);
       }
+
       // ========================================
       // 記事冒頭の概要・数値
       // ========================================
@@ -409,48 +492,123 @@
         const p = intro.querySelector('p');
 
         if (p) {
-          p.textContent = item.intro || item.summary;
+          p.innerHTML = (item.intro || item.summary || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\r\n|\r|\n/g, '<br>');
         }
 
-        const facts = intro.querySelectorAll('.facts > div');
+        const factsWrap = intro.querySelector('.facts');
 
+        const rideDetails = Array.isArray(item.ride_details)
+          ? item.ride_details.filter(x => x && x.label && x.value)
+          : [];
 
-        // 数値は項目の位置だけでなく、ラベルを確認して更新する。
-        // 3番目の項目は記事によって「フェリー支払額」または「開催月」になるため、
-        // 位置だけで判定するとフェリー料金を開催月で上書きしてしまう。
-        if (slug !== 'beppu') {
-          if (facts[0]) {
-            const value = facts[0].querySelector('strong');
-            if (value) {
-              value.textContent =
-                (item.distance || '—').replace(/\s*km$/i, '');
-            }
+        // すべての記事でCMSの走行情報から基本情報欄を生成。
+        if (factsWrap) {
+          const entries = [];
+
+          if (item.distance) {
+            entries.push({
+              label: '走行距離',
+              value: item.distance
+            });
           }
 
-          if (facts[1]) {
-            const value = facts[1].querySelector('strong');
-            if (value) {
-              value.textContent =
-                (item.ascent || '—').replace(/\s*m$/i, '');
-            }
+          if (item.ascent) {
+            entries.push({
+              label: '獲得標高',
+              value: item.ascent
+            });
           }
 
-          const monthFact = [...facts].find(fact =>
-            fact.querySelector('small')?.textContent.trim() === '開催月'
+          const periodValue = item.period || (
+            item.date
+              ? (() => {
+                  const d = new Date(item.date);
+                  return Number.isNaN(d.getTime())
+                    ? ''
+                    : `${d.getFullYear()}年${d.getMonth() + 1}月`;
+                })()
+              : ''
           );
 
-          if (monthFact) {
-            const value = monthFact.querySelector('strong');
-            if (value) value.textContent = dateLabel(item.date);
+          if (periodValue) {
+            entries.push({
+              label: '旅の時期',
+              value: periodValue
+            });
           }
+
+          rideDetails.forEach(x => {
+            entries.push({
+              label: x.label,
+              value: x.value
+            });
+          });
+
+          factsWrap.innerHTML = entries.map(x =>
+            `<div>
+              <small>${esc(x.label)}</small>
+              <strong>${esc(x.value)}</strong>
+            </div>`
+          ).join('');
+
+                   factsWrap.hidden = entries.length === 0;
+        }
+
+        // 別府の記事だけに往復航路の案内を表示
+        const beppuRouteNote = intro.querySelector('#beppu-route-note');
+
+        if (beppuRouteNote && item.slug === 'beppu') {
+          beppuRouteNote.innerHTML = `
+            <span class="eyebrow">この旅を成立させた、往復別航路の工夫</span>
+            <h3>大阪から出発して、神戸へ帰る。</h3>
+
+            <div class="route-pair">
+              <div>
+                <small>往路 / 船中1泊目</small>
+                <strong>大阪南港・ATC → 別府港</strong>
+                <span>別府に着いたら、ここからライド開始。</span>
+              </div>
+
+              <div>
+                <small>復路 / 船中2泊目</small>
+                <strong>大分港 → 神戸港</strong>
+                <span>走行後は豊後竹田から輪行し、大分港へ。</span>
+              </div>
+            </div>
+
+            <p>
+              今回の走行行程では、別府発の帰りの便は出港時刻が早く、間に合いません。
+              そこで復路は大分港発を選びました。
+              その代わり、翌朝の到着地は大阪ではなく神戸。
+              神戸から自宅までの移動も含めて組んだ旅です。
+            </p>
+
+            <p class="small">
+              この旅での航路選択の理由です。予約時は利用日のダイヤを確認してください。
+            </p>
+          `;
+
+          beppuRouteNote.hidden = false;
         }
       }
 
       // ========================================
-      // 本文・画像・目次
+      // 本文の画像・目次
       // ========================================
 
-      article.innerHTML = safeMarkdown(item.body || '');
+      article.innerHTML = (window.AffiliateDisclosure?.html(item.body || '') || '') + safeMarkdown(item.body || '');
+
+      // Stravaの埋め込みがある場合、記事本文の表示後に読み込む
+      if (article.querySelector('.strava-embed-placeholder')) {
+        const script = document.createElement('script');
+        script.src = 'https://strava-embeds.com/embed.js';
+        script.async = true;
+        document.body.appendChild(script);
+      }
 
       fixArticleImages(article);
 

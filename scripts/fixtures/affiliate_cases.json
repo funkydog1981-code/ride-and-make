@@ -1,0 +1,122 @@
+[
+  {
+    "name": "card",
+    "body": "<div class=\"product-card\"><figure><h3>商品</h3></figure></div>",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "text",
+    "body": "<a href=\"https://hb.afl.rakuten.co.jp/ichiba/x/?pc=a&amp;b=c\">商品</a>",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "image",
+    "body": "<a href=\"https://hb.afl.rakuten.co.jp/ichiba/x/\"><img src=\"/assets/hero.webp\" alt=\"商品\"></a>",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "sponsored",
+    "body": "<a href=\"https://example.com/item\" rel=\"nofollow SPONSORED noopener\">商品</a>",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "normal",
+    "body": "[参考](https://example.com/) [動画](https://youtube.com/watch?v=abcdefghijk) [活動](https://strava.com/activities/123)",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "empty",
+    "body": "## 見出し\n\n通常の文章です。",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "manual",
+    "body": "※この記事にはアフィリエイト広告が含まれます。\n\n[商品](https://hb.afl.rakuten.co.jp/ichiba/x/)",
+    "advertising": true,
+    "manual": true
+  },
+  {
+    "name": "multiple",
+    "body": "<div class=\"product-card\"></div>\n\n<div class=\"product-card\"></div>",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "short",
+    "body": "[商品](https://a.r10.to/hExample)",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "reference",
+    "body": "[商品][p]\n\n[p]: https://hb.afl.rakuten.co.jp/ichiba/x/",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "autolink",
+    "body": "<https://hb.afl.rakuten.co.jp/ichiba/x/>",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "lookalike",
+    "body": "[通常](https://hb.afl.rakuten.co.jp.example.com/) <a href=\"https://example.com/hb.afl.rakuten.co.jp/\">参考</a>",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "fenced",
+    "body": "```html\n<div class=\"product-card\"></div>\n```",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "inline",
+    "body": "`<a href=\"https://hb.afl.rakuten.co.jp/ichiba/x/\">商品</a>`",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "comment",
+    "body": "<!-- <div class=\"product-card\"></div> -->",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "script",
+    "body": "<script>\"[商品](https://hb.afl.rakuten.co.jp/ichiba/x/)\"</script>",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "manual-code",
+    "body": "`この記事にはアフィリエイト広告が含まれます。`\n\n<div class=\"product-card\"></div>",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "port",
+    "body": "[商品](https://hb.afl.rakuten.co.jp:443/ichiba/x/)",
+    "advertising": true,
+    "manual": false
+  },
+  {
+    "name": "user",
+    "body": "[参考](https://hb.afl.rakuten.co.jp@evil.invalid/)",
+    "advertising": false,
+    "manual": false
+  },
+  {
+    "name": "manual-html",
+    "body": "<p>この記事には<strong>アフィリエイト広告</strong>が含まれています。</p>\n\n<div class=\"product-card\"></div>",
+    "advertising": true,
+    "manual": true
+  }
+]

@@ -1,8 +1,9 @@
 [build]
-  publish = "public"
+  command = "python3 -B scripts/build_seo.py && python3 -B scripts/test_seo.py SEOTests NavigationLogicTests"
+  publish = "_site"
 
-[[redirects]]
-  from = "/journeys/:slug/"
-  to = "/journey/?slug=:slug"
-  status = 200
-  force = false
+[build.environment]
+  PYTHON_VERSION = "3.13"
+
+[[plugins]]
+  package = "./scripts/netlify-image-cache"

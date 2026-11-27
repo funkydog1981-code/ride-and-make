@@ -1,2 +1,70 @@
-<!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>サイト編集｜走って、つくって。</title></head><body><script src="https://unpkg.com/decap-cms@^3.8.0/dist/decap-cms.js"></script></body></html>
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>サイト編集｜走って、つくって。</title>
+</head>
+<body>
+  <script>window.CMS_MANUAL_INIT = true;</script>
+  <script src="/assets/js/image-privacy.js"></script>
+  <script src="/assets/js/cms-image-privacy.js"></script>
+  <script src="https://unpkg.com/decap-cms@3.18.0/dist/decap-cms.js"></script>
+  <script src="/assets/js/making-info-widget.js"></script>
+  <script src="/assets/js/rakuten-links.js"></script>
+  <script src="/assets/js/product-card-editor.js?v=20261127-preserve"></script>
+  <script src="/assets/js/affiliate-disclosure.js"></script>
+  <script>
+    // 標準の必須・pattern検証も、日本語で理由を伝える。
+    const defaultLocale = CMS.getLocale('en');
+    CMS.registerLocale('en', {
+      ...defaultLocale,
+      editor: {
+        ...defaultLocale.editor,
+        editorControlPane: {
+          ...defaultLocale.editor.editorControlPane,
+          widget: {
+            ...defaultLocale.editor.editorControlPane.widget,
+            required: '%{fieldLabel}を入力してください。',
+            regexPattern: '%{fieldLabel}：%{pattern}'
+          }
+        }
+      }
+    });
+
+    CMS.registerEventListener({
+      name: 'preSave',
+      handler: ({ entry }) => {
+        const data = entry.get('data');
+        if (entry.get('collection') !== 'site' || !data.has('making_articles')) {
+          return data;
+        }
+
+        const articles = data.get('making_articles').toJS();
+        const seen = new Map();
+        const pattern = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+
+        // 同じ保存データ内の各記事を一度だけ調べ、自身との比較を避ける。
+        articles.forEach((article, index) => {
+          const slug = article.slug;
+          const match = typeof slug === 'string' ? slug.match(pattern) : null;
+          if (!match || match[0] !== slug) {
+            throw new Error(
+              `制作記事${index + 1}件目のURL用IDは必須です。半角英小文字・数字・ハイフンのみ使用し、先頭と末尾は英数字にしてください。`
+            );
+          }
+          if (seen.has(slug)) {
+            throw new Error(
+              `制作記事のURL用ID「${slug}」が重複しています（${seen.get(slug) + 1}件目と${index + 1}件目）。記事ごとに異なるIDを入力してください。`
+            );
+          }
+          seen.set(slug, index);
+        });
+
+        return data;
+      }
+    });
+    CMS.init();
+  </script>
+</body>
+</html>

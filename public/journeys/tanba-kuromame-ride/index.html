@@ -710,7 +710,15 @@
         scroll-behavior: auto;
       }
     }
-  </style>
+
+/* フッター項目の追加時も折り返せるようにする */
+footer,.footer-links { flex-wrap:wrap; }
+
+/* チャンネルリンクを追加しても既存ナビゲーションを折り返す。 */
+header nav { flex-wrap:wrap; }
+header nav a { white-space:nowrap; }
+#article-body iframe[src*="youtube.com/embed/"], #article-body iframe[src*="youtube-nocookie.com/embed/"] { width:100%; height:auto; aspect-ratio:16/9; border:0; }
+</style>
 </head>
 
 <body id="top">
@@ -726,7 +734,9 @@
       <a href="#story">旅の記録</a>
       <a href="#itinerary">行程と費用</a>
       <a href="#about">このサイトについて</a>
-    </nav>
+
+<a href="https://www.youtube.com/channel/UCoxnBBcvXtO9DqRjDJId24w" target="_blank" rel="noopener noreferrer" aria-label="YouTube：Funky Maguro（新しいタブで開きます）">YouTube ↗</a>
+</nav>
   </header>
 
   <div style="padding:14px 7%;font-size:12px">
@@ -745,19 +755,17 @@
     >
 
     <div class="hero-copy">
-      <span class="tag">2026.11.1 SOLO １DAY RIDE</span>
       <h1>旅の記録</h1>
       <p>ロードバイクで走った旅の記録。</p>
     </div>
 
     <div class="hero-foot">
-      <span id="article-date">2026.11.1 SOLO １DAY RIDE</span>
       <a href="#story">旅の記録を読む ↓</a>
     </div>
   </section>
 
   <section class="intro" id="story">
-    <div class="eyebrow">RIDE JOURNAL</div>
+    <div class="eyebrow" id="article-category-label"></div>
 
     <h2>旅の記録</h2>
     <p>ロードバイクで走った旅の記録です。</p>
@@ -813,13 +821,13 @@
     <span>
       走って、つくって。 © 2026
       <a href="/contact/">お問い合わせ</a>
-    </span>
+    　<a href="/privacy/">プライバシーポリシー</a></span>
     <span>旅の記録</span>
-  </footer>
+   <a href="https://www.youtube.com/channel/UCoxnBBcvXtO9DqRjDJId24w" target="_blank" rel="noopener noreferrer" aria-label="YouTube：Funky Maguro（新しいタブで開きます）">YouTube ↗</a></footer>
 
   <script async src="https://strava-embeds.com/embed.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.5.0/dist/purify.min.js"></script>
   <script src="/assets/js/cms-content.js"></script>
 
 </body>

@@ -1,0 +1,4 @@
+.affiliate-disclosure { margin:0 0 28px; padding:16px 20px; border-left:3px solid #647b6c; background:#edf0e9; color:#203e33; font-size:15px; line-height:1.8; overflow-wrap:anywhere; }
+.affiliate-disclosure p { margin:0 0 6px; font-size:inherit; line-height:inherit; color:inherit; }
+.affiliate-disclosure a { color:inherit; text-decoration:underline; font-size:14px; }
+@media(max-width:600px) { .affiliate-disclosure { padding:14px 16px; } }

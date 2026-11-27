@@ -1,0 +1,15 @@
+/* 記事本文の商品紹介だけに適用する。インラインCSSは不要。 */
+.product-card { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 2fr); gap:24px; align-items:start; margin:32px 0; padding:24px; border:1px solid #c9cec7; border-radius:4px; }
+.product-card > * { min-width:0; }
+#article-body .product-card img { display:block; width:100%; max-width:100%; height:auto; object-fit:contain; margin:0; }
+.product-card .product-card__body h3 { margin:0 0 12px; font-size:1.2rem; }
+.product-card .product-card__body p { margin:12px 0; overflow-wrap:anywhere; }
+.product-card a { overflow-wrap:anywhere; text-decoration:underline; }
+@media (max-width:600px) {
+  .product-card { grid-template-columns:minmax(0,1fr); gap:16px; padding:16px; }
+  #article-body .product-card img, .product-card > img { max-height:300px; }
+}
+
+.product-card .product-card__body { margin:0; }
+.product-card > img { display:block; width:100%; max-width:100%; height:auto; object-fit:contain; margin:0; }
+.product-card.product-card--no-image { grid-template-columns:minmax(0,1fr); }

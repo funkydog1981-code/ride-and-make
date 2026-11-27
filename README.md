@@ -7,7 +7,7 @@
 - GitHub `funkydog1981-code/ride-and-make` の `main` ブランチとNetlifyの自動デプロイ
 
 ## Netlify公開
-Netlifyの公開ディレクトリは `public`。ビルドコマンドは不要です。`netlify.toml` は `/journeys/:slug/` を汎用記事テンプレートへリライトします。
+ソースは `public`、公開ディレクトリは `_site` です。`python3 -B scripts/build_seo.py` でCMSデータから記事HTML・共有設定・サイトマップを生成します。詳細は [SEOの生成と確認](scripts/SEO_README.md) を参照してください。設定変更だけでは公開されません。
 
 ## CMSログインの初期設定（GitHub OAuth）
 1. GitHubでOAuth Appを作成し、Authorization callback URLを `https://api.netlify.com/auth/done` に設定します。

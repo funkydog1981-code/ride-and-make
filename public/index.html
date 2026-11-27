@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
+<meta name="google-site-verification" content="n9juuv2rX2ve48cZ7al431WtdIhvAZyHEYizpGQm39I" />
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>走って、つくって。｜関西発、自転車旅とものづくり</title>
 <meta name="description" content="関西からロードバイクで旅へ。実際に走ったルート、景色、食事と、自分に合う道具づくりの記録。">
@@ -234,12 +235,44 @@ h3 { line-height:1.6; }
 }
 .making { background:#203d32; color:#f5f5ed; }
 .making .wrap {
+  display:block;
+}
+.making-head {
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:80px;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  column-gap:60px;
+  margin-bottom:36px;
+}
+.making-head .eyebrow,
+.making-head h2 {
+  grid-column:1;
+}
+.making-head p {
+  grid-column:2;
+  grid-row:1 / 3;
+  align-self:center;
+  max-width:480px;
+  margin:0;
+}
+@media(max-width:650px) {
+  .making-head {
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .making-head .eyebrow,
+  .making-head h2,
+  .making-head p {
+    grid-column:1;
+    grid-row:auto;
+  }
 }
 .making p { color:#d0dacd; }
 .making .eyebrow { color:#d5bd78; }
+.making-latest { grid-column:1 / -1; min-width:0; }
+.making .journey-card { color:var(--ink); overflow-wrap:anywhere; }
+.making .journey-card p { color:#556359; }
+.making .journey-empty { color:var(--ink); }
+#latest-making .journey-card-photo img { object-fit:contain; }
 .project { border-top:1px solid #7d9482; padding:25px 0; }
 .project h3 { font-size:21px; font-weight:500; margin:12px 0; }
 .project p { font-size:13px; }
@@ -361,6 +394,52 @@ footer {
   html { scroll-behavior:auto; }
   * { transition:none!important; }
 }
+
+/* スマートフォン：画像の切り取りを抑える */
+@media (max-width: 600px) {
+
+  /* トップページのメイン画像 */
+  .hero-image {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .hero-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  /* 旅の記録一覧：画像をカードの上部に配置 */
+  .journey-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .journey-card-photo {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+    height: auto;
+  }
+
+  .journey-card-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+/* フッター項目の追加時も折り返せるようにする */
+footer,.footer-links { flex-wrap:wrap; }
+
+/* チャンネルリンクを追加しても既存ナビゲーションを折り返す。 */
+header nav { flex-wrap:wrap; }
+header nav a { white-space:nowrap; }
+#article-body iframe[src*="youtube.com/embed/"], #article-body iframe[src*="youtube-nocookie.com/embed/"] { width:100%; height:auto; aspect-ratio:16/9; border:0; }
 </style>
 </head>
 
@@ -373,7 +452,9 @@ footer {
     <a href="#gear">愛車と装備</a>
     <a href="#about">このサイトについて</a>
     <a href="/contact/">お問い合わせ</a>
-  </nav>
+
+<a href="https://www.youtube.com/channel/UCoxnBBcvXtO9DqRjDJId24w" target="_blank" rel="noopener noreferrer" aria-label="YouTube：Funky Maguro（新しいタブで開きます）">YouTube ↗</a>
+</nav>
 </header>
 
 <main>
@@ -416,26 +497,23 @@ footer {
   </section>
 
   <section class="making" id="making">
-    <div class="wrap">
-      <div>
-        <span class="eyebrow">TOOLS & MAKING</span>
-        <h2>ぴったりがなければ、<br>つくってみる。</h2>
-        <p>ロードバイクに乗るのが、一番楽しい。<br>その楽しみの中で生まれた小さな不便を、<br>3Dプリンターや手持ちの工具で解決していきます。</p>
-        <p>買って試した道具のことも、試行錯誤してつくったパーツのことも。使う人の視点で残していきたいと思っています。</p>
+  <div class="wrap">
+    <div class="making-head">
+      <span class="eyebrow">TOOLS & MAKING</span>
+      <h2>道具とものづくり。</h2>
+      <p>ロードバイクの小さな不便を、3Dプリンターや手持ちの工具で解決。買って試した道具の使い心地や、自作パーツの試行錯誤を記録しています。</p>
+    </div>
+
+    <div class="making-latest">
+      <div class="journey-grid" id="latest-making" aria-live="polite" aria-busy="true">
+        <p class="journey-empty">記事を読み込んでいます…</p>
       </div>
-      <div class="project-list">
-        <div class="project">
-          <span class="status">次に紹介したいもの</span>
-          <h3>サドルバッグに取り付ける、<br>リアビューレーダーマウント。</h3>
-          <p>純正の取り付け治具がサドルバッグと干渉する。そこで、バッグ自体に取り付けられるパーツを自作しました。</p>
-          <details class="project-details">
-            <summary>ものづくりの背景を読む ＋</summary>
-            <p>市販品ではぴったりのものが見つからないとき、必要な形を考えて、試作して、使ってみる。その過程も楽しみの一つです。取り付け写真や設計データをもとに、製作の記録をまとめていきます。</p>
-          </details>
-        </div>
+      <div class="journey-list-link">
+        <a class="text-link" href="/making/">制作記事一覧を見る →</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <section class="wrap gear" id="gear">
     <figure class="gear-photo">
@@ -468,6 +546,7 @@ footer {
         <p>大阪近郊を拠点に、ロードバイクで各地を走っています。ルートを考え、ランチのお店を探し、旅の動画を編集するのも楽しみ。紹介した場所を喜んでもらえると、うれしくなります。</p>
         <p>3Dプリンターでは、市販されていない小さなパーツや、手持ちの容器にぴったり収まる収納を製作。木工では棚やベンチ、ウッドデッキなどもつくってきました。</p>
         <p>「走って、つくって。」は、その体験を残す場所です。素晴らしかった景色も、うまくいかなかった経験も。次に走る人、何かをつくる人のヒントになればうれしいです。</p>
+        <p class="youtube-channel">YouTubeチャンネル「Funky Maguro」でも、ロードバイクの旅やものづくりの動画を紹介しています。<a href="https://www.youtube.com/channel/UCoxnBBcvXtO9DqRjDJId24w" target="_blank" rel="noopener noreferrer">動画を見る ↗</a></p>
       </div>
     </div>
   </section>
@@ -480,18 +559,19 @@ footer {
     <a href="#journeys">旅の記録</a>
     <a href="#about">このサイトについて</a>
     <a href="#top">ページの先頭へ ↑</a>
-  </div>
+  <a href="/privacy/">プライバシーポリシー</a> <a href="https://www.youtube.com/channel/UCoxnBBcvXtO9DqRjDJId24w" target="_blank" rel="noopener noreferrer" aria-label="YouTube：Funky Maguro（新しいタブで開きます）">YouTube ↗</a></div>
 </footer>
 
 <script>
 const legacy=['story','sagiridai','food','lunch','mountains','ride-data','itinerary','return','cost','outbound'];
 if(legacy.includes(location.hash.slice(1))) {
-  location.replace('/journeys/beppu/'+location.hash);
+  location.replace('/journey/?slug=beppu'+location.hash);
 }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.5.0/dist/purify.min.js"></script>
 <script src="/assets/js/cms-content.js"></script>
 <script src="/assets/js/journey-list.js"></script>
+<script src="/assets/js/making-list.js"></script>
 </body>
 </html>

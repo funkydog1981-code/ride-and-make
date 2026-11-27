@@ -229,6 +229,35 @@ footer {
   html { scroll-behavior:auto; }
   * { transition:none!important; }
 }
+
+/* スマートフォン：記事カードを画像上・本文下の縦並びにする */
+@media (max-width:650px) {
+  .journey-card {
+    display:flex;
+    flex-direction:column;
+  }
+
+  .journey-card-photo {
+    aspect-ratio:auto;
+    min-height:0;
+    height:auto;
+  }
+
+  .journey-card-photo img {
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+  }
+}
+
+/* フッター項目の追加時も折り返せるようにする */
+footer,.footer-links { flex-wrap:wrap; }
+
+/* チャンネルリンクを追加しても既存ナビゲーションを折り返す。 */
+header nav { flex-wrap:wrap; }
+header nav a { white-space:nowrap; }
+#article-body iframe[src*="youtube.com/embed/"], #article-body iframe[src*="youtube-nocookie.com/embed/"] { width:100%; height:auto; aspect-ratio:16/9; border:0; }
 </style>
 </head>
 
@@ -241,7 +270,9 @@ footer {
     <a href="/#gear">愛車と装備</a>
     <a href="/#about">このサイトについて</a>
     <a href="/contact/">お問い合わせ</a>
-  </nav>
+
+<a href="https://www.youtube.com/channel/UCoxnBBcvXtO9DqRjDJId24w" target="_blank" rel="noopener noreferrer" aria-label="YouTube：Funky Maguro（新しいタブで開きます）">YouTube ↗</a>
+</nav>
 </header>
 
 <main class="wrap">
@@ -269,7 +300,7 @@ footer {
     <a href="/contact/">お問い合わせ</a>
     <a href="/#journeys">旅の記録</a>
     <a href="/#about">このサイトについて</a>
-  </div>
+  <a href="/privacy/">プライバシーポリシー</a> <a href="https://www.youtube.com/channel/UCoxnBBcvXtO9DqRjDJId24w" target="_blank" rel="noopener noreferrer" aria-label="YouTube：Funky Maguro（新しいタブで開きます）">YouTube ↗</a></div>
 </footer>
 
 <script src="/assets/js/journey-list.js"></script>

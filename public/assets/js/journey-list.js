@@ -21,8 +21,9 @@
   const formatTitle = (value) =>
     escapeHTML(value || 'タイトル未設定').replace(/\r?\n/g, '<br>');
 
+  // すべての記事をCMS共通テンプレートで表示する。
   const articleUrl = (slug) =>
-    `/journeys/${encodeURIComponent(slug)}/`;
+    `/journey/?slug=${encodeURIComponent(slug)}`;
 
   const imageUrl = (value) => {
     if (!value) return '/assets/hero.webp';
@@ -41,7 +42,9 @@
 
   const renderCard = (item) => {
     const title = escapeHTML(item.title || 'タイトル未設定');
-    const category = escapeHTML(item.category || '旅の記録');
+    const category = escapeHTML(
+      [item.region, item.ride_category].filter(Boolean).join(' / ') || '旅の記録'
+    );
     const summary = escapeHTML(item.summary || '');
     const date = formatDate(item.date);
     const distance = escapeHTML(item.distance || '—');

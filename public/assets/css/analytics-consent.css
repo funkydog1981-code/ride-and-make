@@ -1,0 +1,16 @@
+.analytics-consent-open { appearance:none; background:transparent; border:0; padding:8px 0; min-height:44px; color:inherit; font:inherit; text-decoration:underline; text-underline-offset:4px; cursor:pointer; }
+.analytics-consent-panel { position:fixed; z-index:1000; bottom:16px; right:16px; width:min(660px,calc(100% - 32px)); box-sizing:border-box; max-height:calc(100dvh - 32px); overflow:auto; padding:22px 26px 16px; background:#faf9f4; color:#20332f; border:1px solid #64716b; border-radius:4px; box-shadow:0 4px 24px #20332f25; font-family:'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif; font-size:13px; line-height:1.8; }
+.analytics-consent-panel[hidden],.analytics-consent-open[hidden] { display:none!important; }
+.analytics-consent-panel h2 { font-family:inherit; font-size:18px; line-height:1.6; font-weight:600; margin:0 44px 10px 0; }
+.analytics-consent-panel p { margin:8px 0; }
+.analytics-consent-panel a { color:inherit; text-decoration:underline; }
+.analytics-consent-panel button { font:inherit; cursor:pointer; }
+.analytics-consent-panel .analytics-consent-close { position:absolute; top:8px; right:8px; width:44px; height:44px; border:0; background:transparent; color:inherit; font-size:24px; }
+.analytics-consent-actions { display:flex; gap:12px; margin:16px 0; }
+.analytics-consent-actions button { flex:1; min-width:0; min-height:46px; padding:10px 16px; border:1px solid #315c48; border-radius:2px; background:#faf9f4; color:#20332f; font-weight:600; }
+.analytics-consent-actions button:hover { background:#e8ede5; }
+.analytics-consent-panel :focus-visible,.analytics-consent-open:focus-visible { outline:3px solid #927027; outline-offset:3px; }
+.analytics-consent-environment,.analytics-consent-current { font-size:12px; }
+.analytics-consent-status { font-size:12px; margin:0; max-width:600px; }
+.analytics-consent-status:empty { display:none; }
+@media(max-width:650px) { .analytics-consent-panel { padding:18px 18px 12px; right:12px; bottom:12px; width:calc(100% - 24px); max-height:calc(100dvh - 24px); } }

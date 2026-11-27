@@ -1,0 +1,257 @@
+[
+  {
+    "name": "valid",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": true,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "no-style",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener"
+    },
+    "valid": true,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "no-target",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": true,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "case-spacing",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "NOFOLLOW  sponsored noopener",
+      "style": " word-wrap : break-word; "
+    },
+    "valid": true,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "title",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;",
+      "title": "商品 \"説明\" & 詳細"
+    },
+    "valid": true,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "host-lookalike",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp.evil.invalid/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "javascript",
+    "attrs": {
+      "href": "javascript:alert(1)",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "credentials",
+    "attrs": {
+      "href": "https://user@hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "port",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp:443/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "backslash",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/\\test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "dot-path",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/a/../test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "image-type",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=picttext&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "duplicate-type",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt&link_type=text",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "wrong-product-host",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp.evil.invalid%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "product-traversal",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2F..%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "no-noopener",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "css-url",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "background:url(https://evil.invalid)"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "css-overlay",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "position:fixed;inset:0"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "css-extra",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;color:red"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "event",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;",
+      "onclick": "alert(1)"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "fake-marker",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;",
+      "data-rakuten-verified": "0"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "unknown-attribute",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;",
+      "download": "x"
+    },
+    "valid": false,
+    "label": "商品 & 写真 <説明>"
+  },
+  {
+    "name": "blank-label",
+    "attrs": {
+      "href": "https://hb.afl.rakuten.co.jp/ichiba/test-code/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Figpsport%2Fsrmini-jp%2F&link_type=text&ut=a%2Bb%3D%3D&scid=af_item_txt",
+      "target": "_blank",
+      "rel": "nofollow sponsored noopener",
+      "style": "word-wrap:break-word;"
+    },
+    "valid": false,
+    "label": ""
+  }
+]
