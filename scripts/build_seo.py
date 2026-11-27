@@ -1,7 +1,9 @@
 """CMSのJSONから公開用HTMLを生成。画像変換はPillow。外部通信・publicへの書き込みなし。"""
 from pathlib import Path
 from urllib.parse import urlsplit, quote, unquote, parse_qs
-from datetime import date
+from datetime import date, datetime, timezone, timedelta
+from email.utils import format_datetime
+import xml.etree.ElementTree as ET
 import html
 import json
 import os
@@ -70,6 +72,36 @@ def validate_images(data):
 
 def article_path(kind, slug):
     return ('/journeys/' if kind == 'journeys' else '/making/') + slug + '/'
+
+
+def rss_feed(groups, base):
+    """公開HTMLと同じ記事集合から概要のみ配信。本文・画像・任意フィールドは含めない。"""
+    rss = ET.Element('rss', version='2.0')
+    channel = ET.SubElement(rss, 'channel')
+    for key, value in [('title', '走って、つくって。'), ('link', base + '/'),
+                       ('description', 'ロードバイクの旅と、道具とものづくりの記録。'), ('language', 'ja')]:
+        ET.SubElement(channel, key).text = value
+    atom = 'http://www.w3.org/2005/Atom'
+    ET.register_namespace('atom', atom)
+    ET.SubElement(channel, '{' + atom + '}link', href=base + '/feed.xml', rel='self', type='application/rss+xml')
+    entries = [(kind, item) for kind, items in groups.items() for item in items]
+    entries.sort(key=lambda entry: (str(entry[1]['date'])[:10], article_path(entry[0], entry[1]['slug'])), reverse=True)
+    for kind, article in entries:
+        item = ET.SubElement(channel, 'item')
+        url = base + article_path(kind, article['slug'])
+        for key, value in [('title', article['title']), ('link', url), ('description', article['summary'])]:
+            ET.SubElement(item, key).text = value
+        # CMSは日付のみ。実際の公開時刻を推測せず、日本時間の当日0時に固定する。
+        published = datetime.combine(date.fromisoformat(str(article['date'])[:10]), datetime.min.time(),
+                                     tzinfo=timezone(timedelta(hours=9)))
+        ET.SubElement(item, 'pubDate').text = format_datetime(published)
+        ET.SubElement(item, 'guid', isPermaLink='true').text = url
+        ET.SubElement(item, 'category').text = '旅の記録' if kind == 'journeys' else '道具とものづくり'
+        category = article.get('ride_category') if kind == 'journeys' else (article.get('making_info') or {}).get('category')
+        if category:
+            ET.SubElement(item, 'category').text = category
+    ET.indent(rss, space='  ')
+    return ET.tostring(rss, encoding='utf-8', xml_declaration=True)
 
 
 def set_id(source, key, content):
@@ -271,6 +303,7 @@ def build():
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     xml += ''.join('  <url><loc>' + esc(base + route) + '</loc></url>\n' for route in sitemap)
     (OUT / 'sitemap.xml').write_text(xml + '</urlset>\n', encoding='utf-8')
+    (OUT / 'feed.xml').write_bytes(rss_feed(groups, base))
     error_page = (PUBLIC / 'privacy/index.html').read_text(encoding='utf-8')
     error_page = re.sub(r'<main>.*?</main>', '<main><h1>ページが見つかりません</h1><p>URLが変更されたか、ページが存在しません。</p><p><a href="/">トップページへ</a> / <a href="/journeys/">旅の記事一覧</a> / <a href="/making/">制作記事一覧</a></p></main>', error_page, flags=re.S)
     error_page = re.sub(r'<title>.*?</title>', '<title>ページが見つかりません｜走って、つくって。</title>', error_page)
@@ -298,6 +331,8 @@ def build():
                 return a[0]
             return re.sub(r'(<a\b[^>]*?)href="([^"]+)"([^>]*>)', anchor, match[0])
         page = re.sub(r'<footer\b[^>]*>.*?</footer>', footer_links, page, flags=re.S)
+        if dest.relative_to(OUT).as_posix() in {route.strip('/') + '/index.html' if route != '/' else 'index.html' for route in sitemap}:
+            page = page.replace('</head>', '<link rel="alternate" type="application/rss+xml" title="走って、つくって。 RSS" href="' + esc(base + '/feed.xml') + '">\n</head>', 1)
         dest.write_text(page, encoding='utf-8')
     optimize_site(ROOT, PUBLIC, OUT)
     assert_private_images(OUT)

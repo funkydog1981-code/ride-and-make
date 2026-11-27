@@ -24,8 +24,9 @@ from functools import partial
 from http.server import ThreadingHTTPServer
 from urllib.request import urlopen
 from urllib.error import HTTPError
+from email.utils import parsedate_to_datetime
 from seo_markdown import render
-from build_seo import ROOT, OUT, article_path
+from build_seo import ROOT, OUT, article_path, rss_feed
 from preview_seo import Handler
 from navigation import category, categories, category_path, recent, related
 
@@ -617,6 +618,59 @@ process.stdout.write(JSON.stringify(results));
             thread.join()
 
 
+    def test_rss_public_articles_and_discovery(self):
+        data = json.loads((ROOT / 'public/content/site.json').read_text(encoding='utf-8'))
+        feed = ET.parse(OUT / 'feed.xml').getroot()
+        self.assertEqual(feed.attrib, {'version': '2.0'})
+        channel = feed.find('channel')
+        base = channel.findtext('link').rstrip('/')
+        expected = {base + article_path(kind, a['slug']): (kind, a)
+                    for kind in ['journeys', 'making_articles'] for a in data[kind]}
+        items = channel.findall('item')
+        self.assertEqual({i.findtext('link') for i in items}, set(expected))
+        self.assertEqual(len(items), len(expected))
+        dates = []
+        for item in items:
+            url = item.findtext('link')
+            kind, article = expected[url]
+            self.assertEqual(item.findtext('title'), article['title'])
+            self.assertEqual(item.findtext('description'), article['summary'])
+            self.assertEqual(item.findtext('guid'), url)
+            self.assertEqual(item.find('guid').get('isPermaLink'), 'true')
+            published = parsedate_to_datetime(item.findtext('pubDate'))
+            self.assertEqual(published.date().isoformat(), str(article['date'])[:10])
+            self.assertEqual(published.utcoffset().total_seconds(), 9 * 3600)
+            dates.append(published)
+            self.assertEqual(item.findall('category')[0].text, '旅の記録' if kind == 'journeys' else '道具とものづくり')
+            page = (OUT / article_path(kind, article['slug']).strip('/') / 'index.html').read_text(encoding='utf-8')
+            self.assertEqual(Page(page).canonicals, [url])
+        self.assertEqual(dates, sorted(dates, reverse=True))
+        sitemap = ET.parse(OUT / 'sitemap.xml').getroot()
+        for loc in sitemap.findall('{*}url/{*}loc'):
+            path = OUT / loc.text.removeprefix(base).strip('/') / 'index.html'
+            page = path.read_text(encoding='utf-8')
+            self.assertEqual(page.count('type="application/rss+xml"'), 1)
+            self.assertIn('href="' + base + '/feed.xml"', page)
+
+    def test_rss_escape_and_private_fields(self):
+        article = {'slug': 'sample', 'title': '日本語 & <商品>', 'summary': '概要 "引用" & <script>alert(1)</script>',
+                   'date': '2026-11-23', 'ride_category': '日帰り & ソロ',
+                   'body': 'PRIVATE_BODY /private/local/path GPS', 'private_note': 'SECRET'}
+        groups = {'journeys': [article], 'making_articles': []}
+        raw = rss_feed(groups, 'https://example.com')
+        item = ET.fromstring(raw).find('channel/item')
+        self.assertEqual(item.findtext('title'), article['title'])
+        self.assertEqual(item.findtext('description'), article['summary'])
+        self.assertIsNone(item.find('description/script'))
+        self.assertNotIn(b'PRIVATE_BODY', raw)
+        self.assertNotIn(b'SECRET', raw)
+        guid = item.findtext('guid')
+        article.update(title='変更', summary='変更後')
+        self.assertEqual(ET.fromstring(rss_feed(groups, 'https://example.com')).findtext('channel/item/guid'), guid)
+        self.assertEqual(rss_feed(groups, 'https://example.com'), rss_feed(groups, 'https://example.com'))
+        self.assertEqual(ET.fromstring(rss_feed({'journeys': [], 'making_articles': []}, 'https://example.com')).findall('channel/item'), [])
+
+
 class CMSBuildTests(unittest.TestCase):
     """CMSが保存するJSONと同じ構造を隔離コピーへ保存し、ビルド連携を検証する。"""
     @classmethod
@@ -677,6 +731,8 @@ class CMSBuildTests(unittest.TestCase):
             self.assertIn(route, Page(self.output('index.html')).links)
             self.assertIn(route, Page(self.output(('journeys' if kind == 'journeys' else 'making') + '/index.html')).links)
             self.assertIn(route, self.output('sitemap.xml'))
+            feed_item = next(x for x in ET.fromstring(self.output('feed.xml')).findall('channel/item') if x.findtext('link').endswith(route))
+            self.assertEqual(feed_item.findtext('title'), article['title'])
             self.assertTrue((self.fixture / '_site' / category_path(kind, category(article, kind)).strip('/') / 'index.html').exists())
             article.update(title='更新したタイトル ' + kind, summary='更新した概要', image='/assets/view.webp',
                            hero_image='/assets/arrival.jpg', body='## 更新後の見出し\n\n更新後の本文。\n\n![更新写真](/assets/view.webp)')
@@ -687,6 +743,9 @@ class CMSBuildTests(unittest.TestCase):
             self.assertIn('更新後の本文', page)
             self.assertNotIn('新規本文', page)
             self.assertEqual(Page(page).meta['description'], '更新した概要')
+            feed_item = next(x for x in ET.fromstring(self.output('feed.xml')).findall('channel/item') if x.findtext('guid').endswith(article_path(kind, article['slug'])))
+            self.assertEqual(feed_item.findtext('title'), article['title'])
+            self.assertEqual(feed_item.findtext('description'), '更新した概要')
             self.assertEqual(original_url(Page(page).meta['og:image'], self.fixture / '_site'), '/assets/arrival.jpg')
             self.assertIn('/assets/view.webp', [original_url(url, self.fixture / '_site') for url in Page(page).images])
         # 旧HTMLもpublicに存在する別府記事を削除。再生成で復活しないことも確認する。
@@ -721,6 +780,7 @@ class CMSBuildTests(unittest.TestCase):
         self.assertFalse((self.fixture / '_site/journeys/beppu/index.html').exists())
         self.assertFalse((self.fixture / '_site/journeys/tanba-kuromame-ride/index.html').exists())
         self.assertEqual(len(ET.fromstring(self.output('sitemap.xml')).findall('{*}url')), 5)
+        self.assertEqual(ET.fromstring(self.output('feed.xml')).findall('channel/item'), [])
 
     def test_reject_duplicate_urls_broken_images_and_missing_metadata(self):
         cases = []
